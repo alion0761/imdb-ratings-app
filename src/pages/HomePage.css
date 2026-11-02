@@ -42,10 +42,17 @@
 .home-content {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem 1.5rem 4rem;
+  padding: 1.25rem 0.75rem 4rem;
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 2rem;
+}
+
+@media (min-width: 640px) {
+  .home-content {
+    padding: 2rem 1.5rem 4rem;
+    gap: 3rem;
+  }
 }
 
 .home-section {}

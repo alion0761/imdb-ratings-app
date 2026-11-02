@@ -87,6 +87,20 @@
   opacity: 1;
 }
 
+/* Dokunmatik cihazlarda overlay yerine alt gradient göster */
+@media (hover: none) {
+  .card-overlay {
+    display: none;
+  }
+  .movie-card:hover {
+    transform: none;
+  }
+  .movie-card:active {
+    transform: scale(0.97);
+    opacity: 0.9;
+  }
+}
+
 .card-play {
   background: var(--accent);
   color: #000;

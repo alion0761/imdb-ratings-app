@@ -6,8 +6,11 @@
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: 1.5rem;
+  padding: 0;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
 }
 
@@ -21,7 +24,7 @@
   overflow: hidden;
   box-shadow: var(--shadow-lg);
   animation: slideUp 0.3s ease;
-  margin: auto;
+  margin: 1.5rem auto;
 }
 
 @keyframes slideUp {
@@ -314,26 +317,70 @@
 }
 
 @media (max-width: 640px) {
-  .detail-content {
-    flex-direction: column;
-    padding: 1.25rem;
-    padding-top: 140px;
-    gap: 1.25rem;
-  }
-
-  .detail-poster-col {
-    width: 120px;
-    flex-direction: row;
+  .detail-overlay {
+    padding: 0;
     align-items: flex-end;
   }
 
+  .detail-modal {
+    border-radius: 20px 20px 0 0;
+    margin: 0;
+    max-height: 92vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .detail-backdrop {
+    height: 180px;
+  }
+
+  .detail-content {
+    flex-direction: column;
+    padding: 1rem;
+    padding-top: 110px;
+    gap: 1rem;
+  }
+
+  .detail-poster-col {
+    width: 100px;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 0.75rem;
+  }
+
   .detail-score-big {
-    width: 80px;
+    width: 72px;
     flex-direction: column;
     gap: 0;
+    padding: 0.4rem;
+  }
+
+  .dsb-val {
+    font-size: 1.2rem;
   }
 
   .detail-title {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
+  }
+
+  .detail-close {
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
+
+  .cast-item {
+    width: 70px;
+  }
+
+  .cast-avatar {
+    width: 52px;
+    height: 52px;
+  }
+
+  .similar-item {
+    width: 80px;
   }
 }
