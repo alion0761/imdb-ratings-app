@@ -114,10 +114,8 @@ export default function DetailModal({ item, type, onClose }) {
   // YouTube arama URL'si — API key gerektirmez
   const ytSearchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(title + ' fragman trailer')}`
 
-  // Türkçe izleme siteleri — arama URL'leri
+  // TMDB ID
   const tmdbId = item.id
-  const dizillaTrUrl  = `https://www.dizilla.club/?s=${encodeURIComponent(title)}`
-  const hdfilmUrl     = `https://www.hdfilmcehennemi.de/?s=${encodeURIComponent(title)}`
 
   // Embed kaynakları — TMDB ID ile, sırayla dener
   const embedSources = [
@@ -184,19 +182,7 @@ export default function DetailModal({ item, type, onClose }) {
                 />
               ) : (
                 <div className="embed-error">
-                  <p>⚠️ Bu kaynak çalışmadı. Aşağıdan izleme sitelerini deneyin.</p>
-                  <div className="watch-btns">
-                    <a className="watch-btn watch-btn-tr" href={dizillaTrUrl} target="_blank" rel="noreferrer">
-                      <span className="watch-btn-icon">🇹🇷</span>
-                      <span className="watch-btn-text">Dizilla'da İzle</span>
-                      <span className="watch-btn-ext">↗</span>
-                    </a>
-                    <a className="watch-btn watch-btn-orig" href={hdfilmUrl} target="_blank" rel="noreferrer">
-                      <span className="watch-btn-icon">🎬</span>
-                      <span className="watch-btn-text">HDFilm'de İzle</span>
-                      <span className="watch-btn-ext">↗</span>
-                    </a>
-                  </div>
+                  <p>⚠️ Bu kaynak şu an çalışmıyor.</p>
                 </div>
               )}
             </div>
@@ -266,21 +252,7 @@ export default function DetailModal({ item, type, onClose }) {
                 </a>
               )}
 
-              {/* Yönlendirme butonları */}
-              {!loading && (
-                <div className="watch-btns">
-                  <a className="watch-btn watch-btn-tr" href={dizillaTrUrl} target="_blank" rel="noreferrer">
-                    <span className="watch-btn-icon">🇹🇷</span>
-                    <span className="watch-btn-text">Türkçe İzle</span>
-                    <span className="watch-btn-ext">↗</span>
-                  </a>
-                  <a className="watch-btn watch-btn-orig" href={hdfilmUrl} target="_blank" rel="noreferrer">
-                    <span className="watch-btn-icon">🎬</span>
-                    <span className="watch-btn-text">HD İzle</span>
-                    <span className="watch-btn-ext">↗</span>
-                  </a>
-                </div>
-              )}
+
             </div>
           )}
 
