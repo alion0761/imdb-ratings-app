@@ -48,7 +48,10 @@ export default function HomePage({ onCardClick }) {
     <div className="home-page">
       <div className="hero">
         <div className="hero-inner">
-          <h1 className="hero-title">🎬 Devoloper by Tellioglu</h1>
+          <div className="hero-title-wrap">
+            <h1 className="hero-title">🎬 TELLIOGLU AİLESİ</h1>
+            <p className="hero-title-sub">Kişisel Film Asistanı</p>
+          </div>
           <p className="hero-sub">En güncel film ve dizileri keşfedin, puanları karşılaştırın.</p>
         </div>
       </div>
