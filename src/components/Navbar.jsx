@@ -5,6 +5,7 @@ const ONLINE_SITES = [
   { name: 'HD Film Cehennemi', url: 'https://www.hdfilmcehennemi.land/' },
   { name: 'DiziPal', url: 'https://www.google.com/search?q=dizipal&oq=dizi&gs_lcrp=EgZjaHJvbWUqCAgAEEUYJxg7MggIABBFGCcYOzIGCAEQRRg5MgYIAhBFGDwyBggDEEUYQTIGCAQQRRg8MgYIBRBFGEEyBggGEEUYPTIGCAcQRRhB0gEIMTg1M2owajeoAgiwAgHxBRDy-YIPfMFP&sourceid=chrome&source=chrome.ob&ie=UTF-8' },
   { name: 'FullHD Filmizlesene', url: 'https://www.fullhdfilmizlesene.now/' },
+  { name: 'Cine HD', url: 'https://cinehd.vc/' },
 ]
 
 export default function Navbar({ onSearch, onTabChange, activeTab }) {
