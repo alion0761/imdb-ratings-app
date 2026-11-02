@@ -33,15 +33,32 @@
   flex-shrink: 0;
 }
 
+.navbar-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 0;
+}
+
 .navbar-name {
-  font-size: 0.95rem;
-  font-weight: 800;
+  font-size: 0.9rem;
+  font-weight: 900;
   color: var(--accent);
-  letter-spacing: -0.3px;
+  letter-spacing: 0.5px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 160px;
+  max-width: 180px;
+  line-height: 1.2;
+}
+
+.navbar-subtitle {
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  line-height: 1.2;
 }
 
 /* Desktop nav links */

@@ -28,7 +28,10 @@ export default function Navbar({ onSearch, onTabChange, activeTab }) {
       <div className="navbar-inner">
         <div className="navbar-brand" onClick={() => handleTab('home')}>
           <span className="navbar-logo">🎬</span>
-          <span className="navbar-name">Devoloper by Tellioglu</span>
+          <div className="navbar-title-wrap">
+            <span className="navbar-name">TELLIOGLU AİLESİ</span>
+            <span className="navbar-subtitle">Kişisel Film Asistanı</span>
+          </div>
         </div>
 
         <nav className={`navbar-links ${menuOpen ? 'open' : ''}`}>
