@@ -1,9 +1,14 @@
 import { useState } from 'react'
 import './Navbar.css'
 
+const ONLINE_SITES = [
+  { name: 'HD Film Cehennemi', url: 'https://filmcehennemihd.com/' },
+]
+
 export default function Navbar({ onSearch, onTabChange, activeTab }) {
   const [query, setQuery] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
+  const [sitesOpen, setSitesOpen] = useState(false)
 
   function handleInput(e) {
     const val = e.target.value
@@ -39,6 +44,28 @@ export default function Navbar({ onSearch, onTabChange, activeTab }) {
           <button className={`nav-link ${activeTab === 'movies' ? 'active' : ''}`} onClick={() => handleTab('movies')}>🎥 Filmler</button>
           <button className={`nav-link ${activeTab === 'tv' ? 'active' : ''}`} onClick={() => handleTab('tv')}>📺 Diziler</button>
           <button className={`nav-link ${activeTab === 'toprated' ? 'active' : ''}`} onClick={() => handleTab('toprated')}>⭐ En İyiler</button>
+
+          {/* Online Film Dropdown */}
+          <div className={`nav-dropdown ${sitesOpen ? 'open' : ''}`}>
+            <button className="nav-link nav-dropdown-toggle" onClick={() => setSitesOpen(v => !v)}>
+              🌐 Online Film <span className="dropdown-arrow">{sitesOpen ? '▲' : '▼'}</span>
+            </button>
+            <div className="nav-dropdown-menu">
+              {ONLINE_SITES.map(site => (
+                <a
+                  key={site.url}
+                  className="nav-dropdown-item"
+                  href={site.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() => { setSitesOpen(false); setMenuOpen(false) }}
+                >
+                  {site.name} <span className="dropdown-ext">↗</span>
+                </a>
+              ))}
+            </div>
+          </div>
+
           <div className="mobile-search-row">
             <div className="search-wrap mobile-search">
               <span className="search-icon">🔍</span>

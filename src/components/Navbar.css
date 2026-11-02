@@ -93,6 +93,90 @@
   background: rgba(245, 197, 24, 0.1);
 }
 
+/* ── Online Film Dropdown ── */
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown-toggle {
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+.dropdown-arrow {
+  font-size: 0.6rem;
+  opacity: 0.7;
+}
+
+.nav-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 200px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  z-index: 200;
+  overflow: hidden;
+  animation: fadeDown 0.15s ease;
+}
+
+.nav-dropdown.open .nav-dropdown-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-dropdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all var(--transition);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.nav-dropdown-item:hover {
+  background: rgba(245,197,24,0.08);
+  color: var(--accent);
+}
+
+.dropdown-ext {
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+/* Mobilde dropdown menü full width olsun */
+@media (max-width: 768px) {
+  .nav-dropdown {
+    width: 100%;
+  }
+
+  .nav-dropdown-menu {
+    position: static;
+    box-shadow: none;
+    border: none;
+    border-top: 1px solid var(--border);
+    border-radius: 0;
+    background: rgba(255,255,255,0.03);
+    animation: none;
+  }
+
+  .nav-dropdown-item {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+  }
+}
+
 /* Right section */
 .navbar-right {
   display: flex;
