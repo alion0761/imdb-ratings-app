@@ -126,6 +126,17 @@
   opacity: 0.8;
 }
 
+.trailer-lang-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 10px;
+  padding: 0.1rem 0.4rem;
+  letter-spacing: 0.03em;
+  opacity: 0.9;
+}
+
 .trailer-play-btn:active {
   transform: scale(0.97);
 }

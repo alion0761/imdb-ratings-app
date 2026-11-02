@@ -9,37 +9,62 @@ function getRatingColor(score) {
   return '#e05c5c'
 }
 
-// Trailer bilgisi döndürür: { type: 'youtube'|'vimeo'|'imdb'|null, key, url }
-function getTrailerInfo(videos, imdbId) {
+// Trailer bilgisi döndürür: { type: 'youtube'|'vimeo'|'ytsearch', key?, lang? }
+function getTrailerInfo(videos, originalLang) {
   const results = videos?.results || []
 
-  // 1. Türkçe YouTube Trailer
-  const trYT = results.find(v => v.type === 'Trailer' && v.site === 'YouTube' && v.iso_639_1 === 'tr')
-  if (trYT) return { type: 'youtube', key: trYT.key }
+  const ytTrailers  = results.filter(v => v.type === 'Trailer' && v.site === 'YouTube')
+  const ytTeasers   = results.filter(v => v.type === 'Teaser'  && v.site === 'YouTube')
+  const ytAny       = results.filter(v => v.site === 'YouTube')
+  const vimeoAny    = results.filter(v => v.site === 'Vimeo')
 
-  // 2. Resmi YouTube Trailer
-  const enYT = results.find(v => v.type === 'Trailer' && v.site === 'YouTube')
-  if (enYT) return { type: 'youtube', key: enYT.key }
+  // Dil önceliğine göre YouTube Trailer seç
+  // 1. Türkçe Trailer
+  const trYT = ytTrailers.find(v => v.iso_639_1 === 'tr')
+  if (trYT) return { type: 'youtube', key: trYT.key, lang: 'tr' }
 
-  // 3. YouTube Teaser
-  const teaser = results.find(v => v.type === 'Teaser' && v.site === 'YouTube')
-  if (teaser) return { type: 'youtube', key: teaser.key }
+  // 2. İngilizce Trailer
+  const enYT = ytTrailers.find(v => v.iso_639_1 === 'en')
+  if (enYT) return { type: 'youtube', key: enYT.key, lang: 'en' }
 
-  // 4. Herhangi YouTube videosu
-  const anyYT = results.find(v => v.site === 'YouTube')
-  if (anyYT) return { type: 'youtube', key: anyYT.key }
+  // 3. Filmin orijinal dilindeki Trailer (Korece, Japonca, İspanyolca vb.)
+  if (originalLang) {
+    const origYT = ytTrailers.find(v => v.iso_639_1 === originalLang)
+    if (origYT) return { type: 'youtube', key: origYT.key, lang: originalLang }
+  }
 
-  // 5. Vimeo Trailer
-  const vimeoT = results.find(v => v.type === 'Trailer' && v.site === 'Vimeo')
+  // 4. Dil fark etmez, herhangi Trailer
+  if (ytTrailers.length) return { type: 'youtube', key: ytTrailers[0].key, lang: ytTrailers[0].iso_639_1 }
+
+  // 5. Türkçe Teaser
+  const trTeaser = ytTeasers.find(v => v.iso_639_1 === 'tr')
+  if (trTeaser) return { type: 'youtube', key: trTeaser.key, lang: 'tr' }
+
+  // 6. İngilizce Teaser
+  const enTeaser = ytTeasers.find(v => v.iso_639_1 === 'en')
+  if (enTeaser) return { type: 'youtube', key: enTeaser.key, lang: 'en' }
+
+  // 7. Orijinal dil Teaser
+  if (originalLang) {
+    const origTeaser = ytTeasers.find(v => v.iso_639_1 === originalLang)
+    if (origTeaser) return { type: 'youtube', key: origTeaser.key, lang: originalLang }
+  }
+
+  // 8. Herhangi Teaser
+  if (ytTeasers.length) return { type: 'youtube', key: ytTeasers[0].key, lang: ytTeasers[0].iso_639_1 }
+
+  // 9. Herhangi YouTube videosu
+  if (ytAny.length) return { type: 'youtube', key: ytAny[0].key, lang: ytAny[0].iso_639_1 }
+
+  // 10. Vimeo Trailer
+  const vimeoT = vimeoAny.find(v => v.type === 'Trailer')
   if (vimeoT) return { type: 'vimeo', key: vimeoT.key }
 
-  // 6. Herhangi Vimeo videosu
-  const anyVimeo = results.find(v => v.site === 'Vimeo')
-  if (anyVimeo) return { type: 'vimeo', key: anyVimeo.key }
+  // 11. Herhangi Vimeo
+  if (vimeoAny.length) return { type: 'vimeo', key: vimeoAny[0].key }
 
-  // 7. YouTube arama (API key gerektirmez, her zaman çalışır)
-  return { type: 'ytsearch', title: null } // title render anında doldurulacak
-
+  // 12. YouTube arama — API key gerektirmez, her zaman çalışır
+  return { type: 'ytsearch' }
 }
 
 export default function DetailModal({ item, type, onClose }) {
@@ -77,8 +102,8 @@ export default function DetailModal({ item, type, onClose }) {
   const posterUrl = item.poster_path ? `${IMG_W500}${item.poster_path}` : PLACEHOLDER_IMG
   const backdropUrl = item.backdrop_path ? `${IMG_ORIGINAL}${item.backdrop_path}` : null
   const d = details
-  const imdbId = d?.imdb_id || d?.external_ids?.imdb_id || null
-  const trailerInfo = d ? getTrailerInfo(d.videos, imdbId) : null
+  const originalLang = d?.original_language || item?.original_language || null
+  const trailerInfo = d ? getTrailerInfo(d.videos, originalLang) : null
 
   // YouTube arama URL'si — API key gerektirmez
   const ytSearchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(title + ' fragman trailer')}`
@@ -126,6 +151,22 @@ export default function DetailModal({ item, type, onClose }) {
                   <span className="trailer-play-text">
                     {trailerInfo.type === 'vimeo' ? "Vimeo'da İzle" : 'Fragmanı İzle'}
                   </span>
+                  {trailerInfo.lang && trailerInfo.lang !== 'tr' && (
+                    <span className="trailer-lang-badge">
+                      {trailerInfo.lang === 'en' ? '🇬🇧 EN'
+                        : trailerInfo.lang === 'ko' ? '🇰🇷 KO'
+                        : trailerInfo.lang === 'ja' ? '🇯🇵 JA'
+                        : trailerInfo.lang === 'fr' ? '🇫🇷 FR'
+                        : trailerInfo.lang === 'de' ? '🇩🇪 DE'
+                        : trailerInfo.lang === 'es' ? '🇪🇸 ES'
+                        : trailerInfo.lang === 'it' ? '🇮🇹 IT'
+                        : trailerInfo.lang === 'pt' ? '🇵🇹 PT'
+                        : trailerInfo.lang === 'ru' ? '🇷🇺 RU'
+                        : trailerInfo.lang === 'zh' ? '🇨🇳 ZH'
+                        : trailerInfo.lang === 'ar' ? '🇸🇦 AR'
+                        : trailerInfo.lang.toUpperCase()}
+                    </span>
+                  )}
                 </button>
               )}
 
