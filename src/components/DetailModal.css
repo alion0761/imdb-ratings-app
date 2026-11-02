@@ -106,6 +106,24 @@
   transform: scale(1.05);
 }
 
+/* IMDB butonu — sarı/turuncu tonlarda */
+.trailer-imdb-btn {
+  text-decoration: none;
+  background: rgba(245, 197, 24, 0.15);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.trailer-imdb-btn:hover {
+  background: var(--accent);
+  color: #000;
+}
+
+.trailer-ext-icon {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
 .trailer-play-btn:active {
   transform: scale(0.97);
 }

@@ -9,20 +9,38 @@ function getRatingColor(score) {
   return '#e05c5c'
 }
 
-function getTrailerKey(videos) {
-  if (!videos?.results?.length) return null
-  // Önce resmi Türkçe trailer
-  const trTr = videos.results.find(v => v.type === 'Trailer' && v.site === 'YouTube' && v.iso_639_1 === 'tr')
-  if (trTr) return trTr.key
-  // Sonra İngilizce resmi trailer
-  const enTr = videos.results.find(v => v.type === 'Trailer' && v.site === 'YouTube')
-  if (enTr) return enTr.key
-  // Teaser
-  const teaser = videos.results.find(v => v.type === 'Teaser' && v.site === 'YouTube')
-  if (teaser) return teaser.key
-  // Herhangi YouTube videosu
-  const any = videos.results.find(v => v.site === 'YouTube')
-  return any ? any.key : null
+// Trailer bilgisi döndürür: { type: 'youtube'|'vimeo'|'imdb'|null, key, url }
+function getTrailerInfo(videos, imdbId) {
+  const results = videos?.results || []
+
+  // 1. Türkçe YouTube Trailer
+  const trYT = results.find(v => v.type === 'Trailer' && v.site === 'YouTube' && v.iso_639_1 === 'tr')
+  if (trYT) return { type: 'youtube', key: trYT.key }
+
+  // 2. Resmi YouTube Trailer
+  const enYT = results.find(v => v.type === 'Trailer' && v.site === 'YouTube')
+  if (enYT) return { type: 'youtube', key: enYT.key }
+
+  // 3. YouTube Teaser
+  const teaser = results.find(v => v.type === 'Teaser' && v.site === 'YouTube')
+  if (teaser) return { type: 'youtube', key: teaser.key }
+
+  // 4. Herhangi YouTube videosu
+  const anyYT = results.find(v => v.site === 'YouTube')
+  if (anyYT) return { type: 'youtube', key: anyYT.key }
+
+  // 5. Vimeo Trailer
+  const vimeoT = results.find(v => v.type === 'Trailer' && v.site === 'Vimeo')
+  if (vimeoT) return { type: 'vimeo', key: vimeoT.key }
+
+  // 6. Herhangi Vimeo videosu
+  const anyVimeo = results.find(v => v.site === 'Vimeo')
+  if (anyVimeo) return { type: 'vimeo', key: anyVimeo.key }
+
+  // 7. IMDB trailer sayfası
+  if (imdbId) return { type: 'imdb', url: `https://www.imdb.com/title/${imdbId}/videogallery/content_type-trailer/` }
+
+  return null
 }
 
 export default function DetailModal({ item, type, onClose }) {
@@ -60,7 +78,18 @@ export default function DetailModal({ item, type, onClose }) {
   const posterUrl = item.poster_path ? `${IMG_W500}${item.poster_path}` : PLACEHOLDER_IMG
   const backdropUrl = item.backdrop_path ? `${IMG_ORIGINAL}${item.backdrop_path}` : null
   const d = details
-  const trailerKey = d ? getTrailerKey(d.videos) : null
+  const imdbId = d?.imdb_id || d?.external_ids?.imdb_id || null
+  const trailerInfo = d ? getTrailerInfo(d.videos, imdbId) : null
+
+  // iframe src hesapla
+  function getIframeSrc() {
+    if (!trailerInfo) return ''
+    if (trailerInfo.type === 'youtube')
+      return `https://www.youtube.com/embed/${trailerInfo.key}?autoplay=1&rel=0&modestbranding=1`
+    if (trailerInfo.type === 'vimeo')
+      return `https://player.vimeo.com/video/${trailerInfo.key}?autoplay=1&title=0&byline=0`
+    return ''
+  }
 
   return (
     <div className="detail-overlay" onClick={onClose}>
@@ -69,12 +98,12 @@ export default function DetailModal({ item, type, onClose }) {
 
         {/* ── Trailer / Backdrop Alanı ── */}
         <div className="detail-hero">
-          {trailerPlaying && trailerKey ? (
+          {trailerPlaying && trailerInfo && trailerInfo.type !== 'imdb' ? (
             <div className="trailer-iframe-wrap">
               <iframe
                 className="trailer-iframe"
-                src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1&rel=0&modestbranding=1`}
-                title={`${title} Trailer`}
+                src={getIframeSrc()}
+                title={`${title} Fragman`}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               />
@@ -85,13 +114,27 @@ export default function DetailModal({ item, type, onClose }) {
               style={{ backgroundImage: backdropUrl ? `url(${backdropUrl})` : 'none' }}
             >
               <div className="detail-backdrop-fade" />
-              {!loading && trailerKey && (
+              {!loading && trailerInfo && trailerInfo.type !== 'imdb' && (
                 <button className="trailer-play-btn" onClick={() => setTrailerPlaying(true)}>
                   <span className="trailer-play-icon">▶</span>
-                  <span className="trailer-play-text">Fragmanı İzle</span>
+                  <span className="trailer-play-text">
+                    {trailerInfo.type === 'vimeo' ? 'Vimeo\'da İzle' : 'Fragmanı İzle'}
+                  </span>
                 </button>
               )}
-              {!loading && !trailerKey && (
+              {!loading && trailerInfo?.type === 'imdb' && (
+                <a
+                  className="trailer-play-btn trailer-imdb-btn"
+                  href={trailerInfo.url}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <span className="trailer-play-icon">🎬</span>
+                  <span className="trailer-play-text">IMDB'de Fragmanı İzle</span>
+                  <span className="trailer-ext-icon">↗</span>
+                </a>
+              )}
+              {!loading && !trailerInfo && (
                 <div className="trailer-no-video">🎬 Fragman bulunamadı</div>
               )}
             </div>

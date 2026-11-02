@@ -78,7 +78,7 @@ export async function fetchMoviesByGenre(genreId, page = 1) {
 
 export async function fetchMovieDetails(id) {
   const { data } = await client().get(`/movie/${id}`, {
-    params: { append_to_response: 'credits,videos,similar' },
+    params: { append_to_response: 'credits,videos,similar,external_ids' },
   })
   return data
 }
@@ -113,7 +113,7 @@ export async function fetchTVByGenre(genreId, page = 1) {
 
 export async function fetchTVDetails(id) {
   const { data } = await client().get(`/tv/${id}`, {
-    params: { append_to_response: 'credits,videos,similar' },
+    params: { append_to_response: 'credits,videos,similar,external_ids' },
   })
   return data
 }
