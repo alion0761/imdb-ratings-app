@@ -37,10 +37,9 @@ function getTrailerInfo(videos, imdbId) {
   const anyVimeo = results.find(v => v.site === 'Vimeo')
   if (anyVimeo) return { type: 'vimeo', key: anyVimeo.key }
 
-  // 7. IMDB trailer sayfası
-  if (imdbId) return { type: 'imdb', url: `https://www.imdb.com/title/${imdbId}/videogallery/content_type-trailer/` }
+  // 7. YouTube arama (API key gerektirmez, her zaman çalışır)
+  return { type: 'ytsearch', title: null } // title render anında doldurulacak
 
-  return null
 }
 
 export default function DetailModal({ item, type, onClose }) {
@@ -81,6 +80,9 @@ export default function DetailModal({ item, type, onClose }) {
   const imdbId = d?.imdb_id || d?.external_ids?.imdb_id || null
   const trailerInfo = d ? getTrailerInfo(d.videos, imdbId) : null
 
+  // YouTube arama URL'si — API key gerektirmez
+  const ytSearchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(title + ' fragman trailer')}`
+
   // iframe src hesapla
   function getIframeSrc() {
     if (!trailerInfo) return ''
@@ -91,6 +93,8 @@ export default function DetailModal({ item, type, onClose }) {
     return ''
   }
 
+  const canPlayInline = trailerInfo && trailerInfo.type !== 'ytsearch'
+
   return (
     <div className="detail-overlay" onClick={onClose}>
       <div className="detail-modal" onClick={e => e.stopPropagation()}>
@@ -98,7 +102,7 @@ export default function DetailModal({ item, type, onClose }) {
 
         {/* ── Trailer / Backdrop Alanı ── */}
         <div className="detail-hero">
-          {trailerPlaying && trailerInfo && trailerInfo.type !== 'imdb' ? (
+          {trailerPlaying && canPlayInline ? (
             <div className="trailer-iframe-wrap">
               <iframe
                 className="trailer-iframe"
@@ -114,26 +118,32 @@ export default function DetailModal({ item, type, onClose }) {
               style={{ backgroundImage: backdropUrl ? `url(${backdropUrl})` : 'none' }}
             >
               <div className="detail-backdrop-fade" />
-              {!loading && trailerInfo && trailerInfo.type !== 'imdb' && (
+
+              {/* YouTube / Vimeo — uygulama içi oynat */}
+              {!loading && canPlayInline && (
                 <button className="trailer-play-btn" onClick={() => setTrailerPlaying(true)}>
                   <span className="trailer-play-icon">▶</span>
                   <span className="trailer-play-text">
-                    {trailerInfo.type === 'vimeo' ? 'Vimeo\'da İzle' : 'Fragmanı İzle'}
+                    {trailerInfo.type === 'vimeo' ? "Vimeo'da İzle" : 'Fragmanı İzle'}
                   </span>
                 </button>
               )}
-              {!loading && trailerInfo?.type === 'imdb' && (
+
+              {/* Fragman bulunamadı → YouTube arama */}
+              {!loading && trailerInfo?.type === 'ytsearch' && (
                 <a
-                  className="trailer-play-btn trailer-imdb-btn"
-                  href={trailerInfo.url}
+                  className="trailer-play-btn trailer-ytsearch-btn"
+                  href={ytSearchUrl}
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <span className="trailer-play-icon">🎬</span>
-                  <span className="trailer-play-text">IMDB'de Fragmanı İzle</span>
+                  <span className="trailer-play-icon">▶</span>
+                  <span className="trailer-play-text">YouTube'da Fragmanı Bul</span>
                   <span className="trailer-ext-icon">↗</span>
                 </a>
               )}
+
+              {/* Hiç seçenek yok (çok nadir) */}
               {!loading && !trailerInfo && (
                 <div className="trailer-no-video">🎬 Fragman bulunamadı</div>
               )}

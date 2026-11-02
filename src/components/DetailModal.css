@@ -106,17 +106,19 @@
   transform: scale(1.05);
 }
 
-/* IMDB butonu — sarı/turuncu tonlarda */
-.trailer-imdb-btn {
+/* YouTube arama butonu */
+.trailer-ytsearch-btn {
   text-decoration: none;
-  background: rgba(245, 197, 24, 0.15);
-  border-color: var(--accent);
-  color: var(--accent);
+  background: rgba(255, 0, 0, 0.15);
+  border-color: #ff4444;
+  color: #ff6666;
 }
 
-.trailer-imdb-btn:hover {
-  background: var(--accent);
-  color: #000;
+.trailer-ytsearch-btn:hover {
+  background: rgba(255, 0, 0, 0.85);
+  border-color: #ff0000;
+  color: #fff;
+  transform: scale(1.05);
 }
 
 .trailer-ext-icon {
