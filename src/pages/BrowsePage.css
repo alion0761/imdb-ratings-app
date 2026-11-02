@@ -83,6 +83,188 @@
   outline: none;
 }
 
+/* ── Başlık Satırı ── */
+.browse-title-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.browse-result-count {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 0.25rem 0.75rem;
+}
+
+/* ── Filtre Toggle Butonu ── */
+.filter-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-light);
+  border-radius: 24px;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  margin-left: auto;
+  min-height: 40px;
+}
+
+.filter-toggle-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.filter-toggle-btn.open {
+  background: rgba(245,197,24,0.1);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.filter-toggle-btn.has-active {
+  border-color: var(--accent);
+}
+
+.filter-badge {
+  background: var(--accent);
+  color: #000;
+  font-size: 0.7rem;
+  font-weight: 800;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.filter-toggle-arrow {
+  font-size: 0.65rem;
+  opacity: 0.7;
+}
+
+/* ── Aktif Filtre Etiketleri ── */
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.filter-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(245,197,24,0.12);
+  border: 1px solid rgba(245,197,24,0.35);
+  color: var(--accent);
+  border-radius: 20px;
+  padding: 0.25rem 0.35rem 0.25rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.filter-tag button {
+  background: rgba(245,197,24,0.2);
+  color: var(--accent);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 0.65rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition);
+}
+
+.filter-tag button:hover {
+  background: rgba(245,197,24,0.4);
+}
+
+.filter-reset-btn {
+  background: transparent;
+  border: 1px solid var(--border-light);
+  color: var(--text-muted);
+  border-radius: 20px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.filter-reset-btn:hover {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+/* ── Filtre Paneli ── */
+.filter-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  animation: fadeDown 0.2s ease;
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.filter-panel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 640px) {
+  .filter-panel-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .filter-panel-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.filter-group-reset {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.filter-reset-full-btn {
+  background: var(--bg-secondary);
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.6rem;
+  cursor: pointer;
+  min-height: 44px;
+  transition: all var(--transition);
+  font-family: inherit;
+}
+
+.filter-reset-full-btn:hover {
+  border-color: var(--red);
+  color: var(--red);
+  background: rgba(224,92,92,0.08);
+}
+
+/* ── İçerik ── */
 .browse-content {
   display: flex;
   flex-direction: column;

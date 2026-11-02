@@ -125,18 +125,32 @@ export async function searchMulti(query, page = 1) {
 }
 
 // ─── Discover with filters ────────────────────────────────────────────────────
-export async function discoverMovies({ genreId, sortBy = 'popularity.desc', page = 1, year } = {}) {
+export async function discoverMovies({
+  genreId, sortBy = 'popularity.desc', page = 1,
+  yearFrom, yearTo, minScore, maxScore, language
+} = {}) {
   const params = { sort_by: sortBy, page, 'vote_count.gte': 50 }
-  if (genreId) params.with_genres = genreId
-  if (year) params.primary_release_year = year
+  if (genreId)   params.with_genres = genreId
+  if (yearFrom)  params['primary_release_date.gte'] = `${yearFrom}-01-01`
+  if (yearTo)    params['primary_release_date.lte'] = `${yearTo}-12-31`
+  if (minScore)  params['vote_average.gte'] = minScore
+  if (maxScore)  params['vote_average.lte'] = maxScore
+  if (language)  params.with_original_language = language
   const { data } = await client().get('/discover/movie', { params })
   return data
 }
 
-export async function discoverTV({ genreId, sortBy = 'popularity.desc', page = 1, year } = {}) {
+export async function discoverTV({
+  genreId, sortBy = 'popularity.desc', page = 1,
+  yearFrom, yearTo, minScore, maxScore, language
+} = {}) {
   const params = { sort_by: sortBy, page, 'vote_count.gte': 50 }
-  if (genreId) params.with_genres = genreId
-  if (year) params.first_air_date_year = year
+  if (genreId)   params.with_genres = genreId
+  if (yearFrom)  params['first_air_date.gte'] = `${yearFrom}-01-01`
+  if (yearTo)    params['first_air_date.lte'] = `${yearTo}-12-31`
+  if (minScore)  params['vote_average.gte'] = minScore
+  if (maxScore)  params['vote_average.lte'] = maxScore
+  if (language)  params.with_original_language = language
   const { data } = await client().get('/discover/tv', { params })
   return data
 }
