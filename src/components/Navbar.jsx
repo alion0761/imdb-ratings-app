@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './Navbar.css'
 
-export default function Navbar({ onSearch, onTabChange, activeTab, onResetKey }) {
+export default function Navbar({ onSearch, onTabChange, activeTab }) {
   const [query, setQuery] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -42,7 +42,6 @@ export default function Navbar({ onSearch, onTabChange, activeTab, onResetKey })
               <input className="search-input" type="search" placeholder="Film veya dizi ara..." value={query} onChange={handleInput} autoComplete="off" />
               {query && <button className="search-clear" onClick={clearSearch}>✕</button>}
             </div>
-            <button className="key-btn" onClick={() => { setMenuOpen(false); onResetKey() }} title="API Anahtarını Değiştir">🔑</button>
           </div>
         </nav>
 
@@ -52,7 +51,6 @@ export default function Navbar({ onSearch, onTabChange, activeTab, onResetKey })
             <input className="search-input" type="search" placeholder="Film veya dizi ara..." value={query} onChange={handleInput} autoComplete="off" />
             {query && <button className="search-clear" onClick={clearSearch}>✕</button>}
           </div>
-          <button className="key-btn" onClick={onResetKey} title="API Anahtarını Değiştir">🔑</button>
           <button className="menu-toggle" onClick={() => setMenuOpen(v => !v)} aria-label="Menü">
             {menuOpen ? '✕' : '☰'}
           </button>

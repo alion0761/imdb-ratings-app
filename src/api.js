@@ -8,25 +8,13 @@ export const IMG_ORIGINAL = `${IMG_BASE}/original`
 
 export const PLACEHOLDER_IMG = 'https://via.placeholder.com/300x450/1c1c1c/666666?text=Görsel+Yok'
 
-let apiKey = ''
-
-export function setApiKey(key) {
-  apiKey = key
-  localStorage.setItem('tmdb_api_key', key)
-}
-
-export function getApiKey() {
-  if (!apiKey) {
-    apiKey = localStorage.getItem('tmdb_api_key') || ''
-  }
-  return apiKey
-}
+const TMDB_KEY = import.meta.env.VITE_TMDB_KEY || ''
 
 function client() {
   return axios.create({
     baseURL: BASE_URL,
     params: {
-      api_key: getApiKey(),
+      api_key: TMDB_KEY,
       language: 'tr-TR',
     },
   })
