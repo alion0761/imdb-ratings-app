@@ -106,6 +106,23 @@ export async function fetchTVDetails(id) {
   return data
 }
 
+// ─── Random Top Rated Film ────────────────────────────────────────────────────
+export async function fetchRandomTopRatedMovie() {
+  // İlk 5 sayfadan rastgele bir sayfa seç, puan >= 7.5 ve oy >= 500
+  const page = Math.floor(Math.random() * 5) + 1
+  const { data } = await client().get('/discover/movie', {
+    params: {
+      sort_by: 'vote_average.desc',
+      'vote_count.gte': 500,
+      'vote_average.gte': 7.5,
+      page,
+    },
+  })
+  const results = data.results || []
+  if (!results.length) return null
+  return results[Math.floor(Math.random() * results.length)]
+}
+
 // ─── Search ───────────────────────────────────────────────────────────────────
 export async function searchMulti(query, page = 1) {
   const { data } = await client().get('/search/multi', { params: { query, page } })

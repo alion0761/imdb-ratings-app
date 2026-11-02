@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react'
 import {
   fetchTrendingMovies, fetchTrendingTV,
   fetchTopRatedMovies, fetchTopRatedTV,
-  fetchNowPlayingMovies, fetchOnAirTV
+  fetchNowPlayingMovies, fetchOnAirTV,
+  fetchRandomTopRatedMovie
 } from '../api'
 import MovieGrid from '../components/MovieGrid'
+import { IMG_W500, PLACEHOLDER_IMG } from '../api'
 import './HomePage.css'
 
 function Section({ title, items, type, loading, onCardClick }) {
@@ -24,6 +26,25 @@ export default function HomePage({ onCardClick }) {
   const [nowPlaying, setNowPlaying] = useState([])
   const [onAir, setOnAir] = useState([])
   const [loading, setLoading] = useState(true)
+
+  // 🎲 Rastgele film önerisi
+  const [suggestion, setSuggestion] = useState(null)
+  const [suggLoading, setSuggLoading] = useState(false)
+  const [suggVisible, setSuggVisible] = useState(false)
+
+  async function handleSuggest() {
+    setSuggLoading(true)
+    setSuggVisible(true)
+    setSuggestion(null)
+    try {
+      const movie = await fetchRandomTopRatedMovie()
+      setSuggestion(movie)
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setSuggLoading(false)
+    }
+  }
 
   useEffect(() => {
     setLoading(true)
@@ -53,6 +74,49 @@ export default function HomePage({ onCardClick }) {
             <p className="hero-title-sub">Kişisel Film Asistanı</p>
           </div>
           <p className="hero-sub">En güncel film ve dizileri keşfedin, puanları karşılaştırın.</p>
+
+          {/* 🎲 Bugün ne izlesem? */}
+          <button className="suggest-btn" onClick={handleSuggest} disabled={suggLoading}>
+            <span className="suggest-btn-icon">{suggLoading ? '⏳' : '🎲'}</span>
+            <span>{suggLoading ? 'Seçiliyor...' : 'Bugün ne izlesem?'}</span>
+          </button>
+
+          {suggVisible && (
+            <div className="suggest-card-wrap">
+              {suggLoading && (
+                <div className="suggest-loading">
+                  <div className="suggest-spinner" />
+                  <span>Harika bir film aranıyor...</span>
+                </div>
+              )}
+              {!suggLoading && suggestion && (
+                <div className="suggest-card" onClick={() => onCardClick(suggestion, 'movie')}>
+                  <img
+                    className="suggest-poster"
+                    src={suggestion.poster_path ? `${IMG_W500}${suggestion.poster_path}` : PLACEHOLDER_IMG}
+                    alt={suggestion.title}
+                    onError={e => { e.target.src = PLACEHOLDER_IMG }}
+                  />
+                  <div className="suggest-info">
+                    <div className="suggest-label">🎯 Bugünün Önerisi</div>
+                    <h3 className="suggest-title">{suggestion.title}</h3>
+                    {suggestion.release_date && (
+                      <div className="suggest-year">{suggestion.release_date.slice(0, 4)}</div>
+                    )}
+                    <div className="suggest-score">
+                      ⭐ <strong>{suggestion.vote_average?.toFixed(1)}</strong>
+                      <span className="suggest-score-max">/10</span>
+                    </div>
+                    {suggestion.overview && (
+                      <p className="suggest-overview">{suggestion.overview}</p>
+                    )}
+                    <div className="suggest-cta">Detayları Gör →</div>
+                  </div>
+                  <button className="suggest-close" onClick={e => { e.stopPropagation(); setSuggVisible(false); setSuggestion(null) }}>✕</button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
