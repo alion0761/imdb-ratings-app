@@ -9,14 +9,32 @@ function getRatingColor(score) {
   return '#e05c5c'
 }
 
+function getTrailerKey(videos) {
+  if (!videos?.results?.length) return null
+  // Önce resmi Türkçe trailer
+  const trTr = videos.results.find(v => v.type === 'Trailer' && v.site === 'YouTube' && v.iso_639_1 === 'tr')
+  if (trTr) return trTr.key
+  // Sonra İngilizce resmi trailer
+  const enTr = videos.results.find(v => v.type === 'Trailer' && v.site === 'YouTube')
+  if (enTr) return enTr.key
+  // Teaser
+  const teaser = videos.results.find(v => v.type === 'Teaser' && v.site === 'YouTube')
+  if (teaser) return teaser.key
+  // Herhangi YouTube videosu
+  const any = videos.results.find(v => v.site === 'YouTube')
+  return any ? any.key : null
+}
+
 export default function DetailModal({ item, type, onClose }) {
   const [details, setDetails] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [trailerPlaying, setTrailerPlaying] = useState(false)
 
   useEffect(() => {
     if (!item) return
     setLoading(true)
     setDetails(null)
+    setTrailerPlaying(false)
     const fetcher = type === 'movie' ? fetchMovieDetails : fetchTVDetails
     fetcher(item.id)
       .then(setDetails)
@@ -42,16 +60,49 @@ export default function DetailModal({ item, type, onClose }) {
   const posterUrl = item.poster_path ? `${IMG_W500}${item.poster_path}` : PLACEHOLDER_IMG
   const backdropUrl = item.backdrop_path ? `${IMG_ORIGINAL}${item.backdrop_path}` : null
   const d = details
+  const trailerKey = d ? getTrailerKey(d.videos) : null
 
   return (
     <div className="detail-overlay" onClick={onClose}>
       <div className="detail-modal" onClick={e => e.stopPropagation()}>
         <button className="detail-close" onClick={onClose}>✕</button>
-        {backdropUrl && (
-          <div className="detail-backdrop" style={{ backgroundImage: `url(${backdropUrl})` }}>
-            <div className="detail-backdrop-fade" />
-          </div>
-        )}
+
+        {/* ── Trailer / Backdrop Alanı ── */}
+        <div className="detail-hero">
+          {trailerPlaying && trailerKey ? (
+            <div className="trailer-iframe-wrap">
+              <iframe
+                className="trailer-iframe"
+                src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1&rel=0&modestbranding=1`}
+                title={`${title} Trailer`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          ) : (
+            <div
+              className="detail-backdrop"
+              style={{ backgroundImage: backdropUrl ? `url(${backdropUrl})` : 'none' }}
+            >
+              <div className="detail-backdrop-fade" />
+              {!loading && trailerKey && (
+                <button className="trailer-play-btn" onClick={() => setTrailerPlaying(true)}>
+                  <span className="trailer-play-icon">▶</span>
+                  <span className="trailer-play-text">Fragmanı İzle</span>
+                </button>
+              )}
+              {!loading && !trailerKey && (
+                <div className="trailer-no-video">🎬 Fragman bulunamadı</div>
+              )}
+            </div>
+          )}
+          {trailerPlaying && (
+            <button className="trailer-stop-btn" onClick={() => setTrailerPlaying(false)}>
+              ✕ Kapat
+            </button>
+          )}
+        </div>
+
         <div className="detail-content">
           <div className="detail-poster-col">
             <img

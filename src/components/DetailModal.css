@@ -53,19 +53,122 @@
   background: rgba(255,255,255,0.15);
 }
 
+/* ── Hero (Trailer / Backdrop) ── */
+.detail-hero {
+  position: relative;
+  width: 100%;
+  background: #000;
+}
+
+/* Backdrop modu */
 .detail-backdrop {
-  position: absolute;
-  inset: 0;
-  height: 260px;
+  position: relative;
+  width: 100%;
+  height: 280px;
   background-size: cover;
   background-position: center top;
-  z-index: 0;
+  background-color: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .detail-backdrop-fade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(22,22,22,0.3) 0%, rgba(22,22,22,1) 100%);
+  background: linear-gradient(to bottom, rgba(22,22,22,0.25) 0%, rgba(22,22,22,1) 100%);
+}
+
+/* Trailer play butonu */
+.trailer-play-btn {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(0, 0, 0, 0.75);
+  border: 2px solid rgba(255,255,255,0.85);
+  border-radius: 50px;
+  color: #fff;
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition), border-color var(--transition);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.trailer-play-btn:hover {
+  background: rgba(245,197,24,0.9);
+  border-color: var(--accent);
+  color: #000;
+  transform: scale(1.05);
+}
+
+.trailer-play-btn:active {
+  transform: scale(0.97);
+}
+
+.trailer-play-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.trailer-play-text {
+  font-size: 0.95rem;
+  letter-spacing: 0.2px;
+}
+
+/* Fragman yok mesajı */
+.trailer-no-video {
+  position: relative;
+  z-index: 2;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  background: rgba(0,0,0,0.5);
+  padding: 0.4rem 0.9rem;
+  border-radius: 20px;
+}
+
+/* YouTube iframe modu */
+.trailer-iframe-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #000;
+}
+
+.trailer-iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+/* Kapat butonu (iframe üstünde) */
+.trailer-stop-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 10;
+  background: rgba(0,0,0,0.8);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.trailer-stop-btn:hover {
+  background: rgba(255,255,255,0.15);
 }
 
 .detail-content {
@@ -74,7 +177,7 @@
   display: flex;
   gap: 2rem;
   padding: 2rem;
-  padding-top: 160px;
+  padding-top: 1.5rem;
 }
 
 .detail-poster-col {
@@ -331,13 +434,13 @@
   }
 
   .detail-backdrop {
-    height: 180px;
+    height: 220px;
   }
 
   .detail-content {
     flex-direction: column;
     padding: 1rem;
-    padding-top: 110px;
+    padding-top: 1rem;
     gap: 1rem;
   }
 
