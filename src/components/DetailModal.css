@@ -69,8 +69,10 @@
   background-position: center top;
   background-color: #111;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0;
 }
 
 .detail-backdrop-fade {
@@ -79,31 +81,41 @@
   background: linear-gradient(to bottom, rgba(22,22,22,0.25) 0%, rgba(22,22,22,1) 100%);
 }
 
-/* Trailer play butonu */
+/* Fragman İzle butonu — modern, ortalı, tek buton */
 .trailer-play-btn {
   position: relative;
   z-index: 2;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  background: rgba(0, 0, 0, 0.75);
-  border: 2px solid rgba(255,255,255,0.85);
+  justify-content: center;
+  gap: 0.65rem;
+  background: linear-gradient(135deg, rgba(245,197,24,0.18) 0%, rgba(245,197,24,0.08) 100%);
+  border: 2px solid rgba(245,197,24,0.75);
   border-radius: 50px;
   color: #fff;
-  padding: 0.7rem 1.5rem;
-  font-size: 1rem;
+  padding: 0.85rem 2.2rem;
+  font-size: 1.05rem;
   font-weight: 700;
+  letter-spacing: 0.04em;
   cursor: pointer;
-  transition: background var(--transition), transform var(--transition), border-color var(--transition);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  transition: all 0.25s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 24px rgba(245,197,24,0.18), 0 1.5px 8px rgba(0,0,0,0.35);
+  text-shadow: 0 1px 4px rgba(0,0,0,0.4);
 }
 
 .trailer-play-btn:hover {
-  background: rgba(245,197,24,0.9);
-  border-color: var(--accent);
-  color: #000;
-  transform: scale(1.05);
+  background: linear-gradient(135deg, rgba(245,197,24,0.92) 0%, rgba(220,170,10,0.92) 100%);
+  border-color: #F5C518;
+  color: #111;
+  transform: scale(1.06) translateY(-1px);
+  box-shadow: 0 8px 32px rgba(245,197,24,0.45), 0 2px 12px rgba(0,0,0,0.4);
+  text-shadow: none;
+}
+
+.trailer-play-btn:active {
+  transform: scale(0.98);
 }
 
 /* YouTube arama butonu */
@@ -137,11 +149,9 @@
   opacity: 0.9;
 }
 
-/* ── Film İzle Ana Butonu ── */
-.watch-main-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
+/* ── Film İzle Ana Butonu (kaldırıldı) ── */
+.watch-main-btn-DISABLED {
+  display: none;
   background: linear-gradient(135deg, #e50914, #b20710);
   border: none;
   border-radius: 30px;

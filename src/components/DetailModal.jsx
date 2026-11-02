@@ -209,20 +209,12 @@ export default function DetailModal({ item, type, onClose }) {
             >
               <div className="detail-backdrop-fade" />
 
-              {/* Film İzle butonu — büyük, belirgin */}
-              {!loading && (
-                <button className="watch-main-btn" onClick={startWatch}>
-                  <span className="watch-main-icon">▶</span>
-                  <span className="watch-main-text">Film İzle</span>
-                </button>
-              )}
-
-              {/* Fragman butonu */}
+              {/* Fragman butonu — ortalı, modern */}
               {!loading && canPlayInline && (
                 <button className="trailer-play-btn" onClick={() => setTrailerPlaying(true)}>
-                  <span className="trailer-play-icon">🎬</span>
+                  <span className="trailer-play-icon">▶</span>
                   <span className="trailer-play-text">
-                    {trailerInfo.type === 'vimeo' ? "Vimeo'da İzle" : 'Fragmanı İzle'}
+                    {trailerInfo.type === 'vimeo' ? "Vimeo'da İzle" : 'Fragman İzle'}
                   </span>
                   {trailerInfo.lang && trailerInfo.lang !== 'tr' && (
                     <span className="trailer-lang-badge">
