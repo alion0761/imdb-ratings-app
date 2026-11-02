@@ -108,6 +108,10 @@ export default function DetailModal({ item, type, onClose }) {
   // YouTube arama URL'si — API key gerektirmez
   const ytSearchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(title + ' fragman trailer')}`
 
+  // CineHD izleme URL'leri
+  const cinehdTrUrl   = `https://cinehd.vc/?s=${encodeURIComponent(title + ' turkce')}`
+  const cinehdOrigUrl = `https://cinehd.vc/?s=${encodeURIComponent(title)}`
+
   // iframe src hesapla
   function getIframeSrc() {
     if (!trailerInfo) return ''
@@ -187,6 +191,22 @@ export default function DetailModal({ item, type, onClose }) {
               {/* Hiç seçenek yok (çok nadir) */}
               {!loading && !trailerInfo && (
                 <div className="trailer-no-video">🎬 Fragman bulunamadı</div>
+              )}
+
+              {/* CineHD İzleme Butonları — her zaman göster */}
+              {!loading && (
+                <div className="watch-btns">
+                  <a className="watch-btn watch-btn-tr" href={cinehdTrUrl} target="_blank" rel="noreferrer">
+                    <span className="watch-btn-icon">🇹🇷</span>
+                    <span className="watch-btn-text">Türkçe İzle</span>
+                    <span className="watch-btn-ext">↗</span>
+                  </a>
+                  <a className="watch-btn watch-btn-orig" href={cinehdOrigUrl} target="_blank" rel="noreferrer">
+                    <span className="watch-btn-icon">🌍</span>
+                    <span className="watch-btn-text">Orijinal İzle</span>
+                    <span className="watch-btn-ext">↗</span>
+                  </a>
+                </div>
               )}
             </div>
           )}
