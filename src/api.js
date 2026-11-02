@@ -8,7 +8,7 @@ export const IMG_ORIGINAL = `${IMG_BASE}/original`
 
 export const PLACEHOLDER_IMG = 'https://via.placeholder.com/300x450/1c1c1c/666666?text=Görsel+Yok'
 
-const TMDB_KEY = import.meta.env.VITE_TMDB_KEY || ''
+const TMDB_KEY = import.meta.env.VITE_TMDB_KEY || 'fe7d08ca8fd1be79792efad7f4e7238e'
 
 function client() {
   return axios.create({
