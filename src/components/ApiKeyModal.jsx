@@ -21,7 +21,7 @@ export default function ApiKeyModal({ onConfirm }) {
     <div className="modal-overlay">
       <div className="modal-box">
         <div className="modal-icon">🎬</div>
-        <h1 className="modal-title">SinemaDB</h1>
+        <h1 className="modal-title">Devoloper by Tellioglu</h1>
         <p className="modal-subtitle">Film & Dizi Puanlama Uygulaması</p>
 
         <div className="modal-info">
