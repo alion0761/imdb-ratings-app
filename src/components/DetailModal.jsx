@@ -279,6 +279,62 @@ export default function DetailModal({ item, type, onClose }) {
   )
 }
 
+function WatchProviders({ d }) {
+  const providerData = d?.['watch/providers']?.results
+  const region = providerData?.TR || providerData?.US || null
+  if (!region) return null
+
+  const flatrate = region.flatrate || []
+  const rent     = region.rent     || []
+  const buy      = region.buy      || []
+
+  const allProviders = []
+  const seen = new Set()
+  ;[...flatrate, ...rent, ...buy].forEach(p => {
+    if (!seen.has(p.provider_id)) {
+      seen.add(p.provider_id)
+      const pType = flatrate.find(f => f.provider_id === p.provider_id)
+        ? 'flatrate'
+        : rent.find(r => r.provider_id === p.provider_id)
+        ? 'rent'
+        : 'buy'
+      allProviders.push({ ...p, pType })
+    }
+  })
+
+  if (!allProviders.length) return null
+
+  return (
+    <div className="detail-section">
+      <h4 className="detail-section-title">📡 Nereden İzlenir</h4>
+      <div className="providers-list">
+        {allProviders.map(p => (
+          <a
+            key={p.provider_id}
+            href={region.link || '#'}
+            target="_blank"
+            rel="noreferrer"
+            className={`provider-item provider-${p.pType}`}
+            title={`${p.provider_name} — ${p.pType === 'flatrate' ? 'Abonelik' : p.pType === 'rent' ? 'Kiralık' : 'Satın Al'}`}
+          >
+            <img
+              src={`https://image.tmdb.org/t/p/original${p.logo_path}`}
+              alt={p.provider_name}
+              className="provider-logo"
+              onError={e => { e.target.style.display = 'none' }}
+            />
+            <span className="provider-name">{p.provider_name}</span>
+            <span className={`provider-badge provider-badge-${p.pType}`}>
+              {p.pType === 'flatrate' ? 'Abonelik' : p.pType === 'rent' ? 'Kiralık' : 'Satın Al'}
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+
 function DetailInfo({ d, loading, title, type }) {
   return (
     <div className="detail-info-col">
@@ -314,6 +370,7 @@ function DetailInfo({ d, loading, title, type }) {
               <p className="detail-overview">{d.overview}</p>
             </div>
           )}
+<WatchProviders d={d} />
           {d?.credits?.cast?.length > 0 && (
             <div className="detail-section">
               <h4 className="detail-section-title">Oyuncular</h4>
