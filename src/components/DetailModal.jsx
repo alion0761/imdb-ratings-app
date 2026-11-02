@@ -71,12 +71,18 @@ export default function DetailModal({ item, type, onClose }) {
   const [details, setDetails] = useState(null)
   const [loading, setLoading] = useState(true)
   const [trailerPlaying, setTrailerPlaying] = useState(false)
+  const [watchMode, setWatchMode] = useState(null)   // null | 'embed'
+  const [embedSrc, setEmbedSrc] = useState('')
+  const [embedError, setEmbedError] = useState(false)
 
   useEffect(() => {
     if (!item) return
     setLoading(true)
     setDetails(null)
     setTrailerPlaying(false)
+    setWatchMode(null)
+    setEmbedSrc('')
+    setEmbedError(false)
     const fetcher = type === 'movie' ? fetchMovieDetails : fetchTVDetails
     fetcher(item.id)
       .then(setDetails)
@@ -108,11 +114,42 @@ export default function DetailModal({ item, type, onClose }) {
   // YouTube arama URL'si — API key gerektirmez
   const ytSearchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(title + ' fragman trailer')}`
 
-  // CineHD izleme URL'leri
-  const cinehdTrUrl   = `https://cinehd.vc/?s=${encodeURIComponent(title + ' turkce')}`
-  const cinehdOrigUrl = `https://cinehd.vc/?s=${encodeURIComponent(title)}`
+  // Türkçe izleme siteleri — arama URL'leri
+  const tmdbId = item.id
+  const dizillaTrUrl  = `https://www.dizilla.club/?s=${encodeURIComponent(title)}`
+  const hdfilmUrl     = `https://www.hdfilmcehennemi.de/?s=${encodeURIComponent(title)}`
 
-  // iframe src hesapla
+  // Embed kaynakları — TMDB ID ile, sırayla dener
+  const embedSources = [
+    `https://vidsrc.to/embed/${type === 'movie' ? 'movie' : 'tv'}/${tmdbId}`,
+    `https://www.2embed.cc/embed/${tmdbId}`,
+    `https://vidsrc.me/embed/${type === 'movie' ? 'movie' : 'tv'}?tmdb=${tmdbId}`,
+  ]
+
+  function startWatch() {
+    setEmbedError(false)
+    setEmbedSrc(embedSources[0])
+    setWatchMode('embed')
+    setTrailerPlaying(false)
+  }
+
+  function stopWatch() {
+    setWatchMode(null)
+    setEmbedSrc('')
+    setEmbedError(false)
+  }
+
+  function tryNextEmbed() {
+    const idx = embedSources.indexOf(embedSrc)
+    if (idx < embedSources.length - 1) {
+      setEmbedSrc(embedSources[idx + 1])
+      setEmbedError(false)
+    } else {
+      setEmbedError(true)
+    }
+  }
+
+  // iframe src hesapla (fragman için)
   function getIframeSrc() {
     if (!trailerInfo) return ''
     if (trailerInfo.type === 'youtube')
@@ -129,9 +166,44 @@ export default function DetailModal({ item, type, onClose }) {
       <div className="detail-modal" onClick={e => e.stopPropagation()}>
         <button className="detail-close" onClick={onClose}>✕</button>
 
-        {/* ── Trailer / Backdrop Alanı ── */}
+        {/* ── Hero Alanı ── */}
         <div className="detail-hero">
-          {trailerPlaying && canPlayInline ? (
+
+          {/* Embed player — Film İzle modunda */}
+          {watchMode === 'embed' && (
+            <div className="trailer-iframe-wrap">
+              {!embedError ? (
+                <iframe
+                  key={embedSrc}
+                  className="trailer-iframe"
+                  src={embedSrc}
+                  title={`${title} İzle`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                  allowFullScreen
+                  onError={tryNextEmbed}
+                />
+              ) : (
+                <div className="embed-error">
+                  <p>⚠️ Bu kaynak çalışmadı. Aşağıdan izleme sitelerini deneyin.</p>
+                  <div className="watch-btns">
+                    <a className="watch-btn watch-btn-tr" href={dizillaTrUrl} target="_blank" rel="noreferrer">
+                      <span className="watch-btn-icon">🇹🇷</span>
+                      <span className="watch-btn-text">Dizilla'da İzle</span>
+                      <span className="watch-btn-ext">↗</span>
+                    </a>
+                    <a className="watch-btn watch-btn-orig" href={hdfilmUrl} target="_blank" rel="noreferrer">
+                      <span className="watch-btn-icon">🎬</span>
+                      <span className="watch-btn-text">HDFilm'de İzle</span>
+                      <span className="watch-btn-ext">↗</span>
+                    </a>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Fragman player */}
+          {watchMode !== 'embed' && trailerPlaying && canPlayInline && (
             <div className="trailer-iframe-wrap">
               <iframe
                 className="trailer-iframe"
@@ -141,17 +213,28 @@ export default function DetailModal({ item, type, onClose }) {
                 allowFullScreen
               />
             </div>
-          ) : (
+          )}
+
+          {/* Backdrop — oynatma modunda değilken */}
+          {watchMode !== 'embed' && !trailerPlaying && (
             <div
               className="detail-backdrop"
               style={{ backgroundImage: backdropUrl ? `url(${backdropUrl})` : 'none' }}
             >
               <div className="detail-backdrop-fade" />
 
-              {/* YouTube / Vimeo — uygulama içi oynat */}
+              {/* Film İzle butonu — büyük, belirgin */}
+              {!loading && (
+                <button className="watch-main-btn" onClick={startWatch}>
+                  <span className="watch-main-icon">▶</span>
+                  <span className="watch-main-text">Film İzle</span>
+                </button>
+              )}
+
+              {/* Fragman butonu */}
               {!loading && canPlayInline && (
                 <button className="trailer-play-btn" onClick={() => setTrailerPlaying(true)}>
-                  <span className="trailer-play-icon">▶</span>
+                  <span className="trailer-play-icon">🎬</span>
                   <span className="trailer-play-text">
                     {trailerInfo.type === 'vimeo' ? "Vimeo'da İzle" : 'Fragmanı İzle'}
                   </span>
@@ -174,44 +257,36 @@ export default function DetailModal({ item, type, onClose }) {
                 </button>
               )}
 
-              {/* Fragman bulunamadı → YouTube arama */}
+              {/* YouTube arama fallback */}
               {!loading && trailerInfo?.type === 'ytsearch' && (
-                <a
-                  className="trailer-play-btn trailer-ytsearch-btn"
-                  href={ytSearchUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                <a className="trailer-play-btn trailer-ytsearch-btn" href={ytSearchUrl} target="_blank" rel="noreferrer">
                   <span className="trailer-play-icon">▶</span>
                   <span className="trailer-play-text">YouTube'da Fragmanı Bul</span>
                   <span className="trailer-ext-icon">↗</span>
                 </a>
               )}
 
-              {/* Hiç seçenek yok (çok nadir) */}
-              {!loading && !trailerInfo && (
-                <div className="trailer-no-video">🎬 Fragman bulunamadı</div>
-              )}
-
-              {/* CineHD İzleme Butonları — her zaman göster */}
+              {/* Yönlendirme butonları */}
               {!loading && (
                 <div className="watch-btns">
-                  <a className="watch-btn watch-btn-tr" href={cinehdTrUrl} target="_blank" rel="noreferrer">
+                  <a className="watch-btn watch-btn-tr" href={dizillaTrUrl} target="_blank" rel="noreferrer">
                     <span className="watch-btn-icon">🇹🇷</span>
                     <span className="watch-btn-text">Türkçe İzle</span>
                     <span className="watch-btn-ext">↗</span>
                   </a>
-                  <a className="watch-btn watch-btn-orig" href={cinehdOrigUrl} target="_blank" rel="noreferrer">
-                    <span className="watch-btn-icon">🌍</span>
-                    <span className="watch-btn-text">Orijinal İzle</span>
+                  <a className="watch-btn watch-btn-orig" href={hdfilmUrl} target="_blank" rel="noreferrer">
+                    <span className="watch-btn-icon">🎬</span>
+                    <span className="watch-btn-text">HD İzle</span>
                     <span className="watch-btn-ext">↗</span>
                   </a>
                 </div>
               )}
             </div>
           )}
-          {trailerPlaying && (
-            <button className="trailer-stop-btn" onClick={() => setTrailerPlaying(false)}>
+
+          {/* Kapat butonu — oynatma modlarında */}
+          {(trailerPlaying || watchMode === 'embed') && (
+            <button className="trailer-stop-btn" onClick={() => { setTrailerPlaying(false); stopWatch() }}>
               ✕ Kapat
             </button>
           )}

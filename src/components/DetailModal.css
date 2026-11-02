@@ -137,7 +137,61 @@
   opacity: 0.9;
 }
 
-/* ── CineHD İzleme Butonları ── */
+/* ── Film İzle Ana Butonu ── */
+.watch-main-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: linear-gradient(135deg, #e50914, #b20710);
+  border: none;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 800;
+  padding: 0.75rem 2rem;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(229,9,20,0.5);
+  transition: all 0.2s ease;
+  margin-bottom: 0.6rem;
+  min-height: 50px;
+  letter-spacing: 0.02em;
+}
+
+.watch-main-btn:hover {
+  transform: scale(1.06);
+  box-shadow: 0 6px 28px rgba(229,9,20,0.7);
+}
+
+.watch-main-icon {
+  font-size: 1.2rem;
+}
+
+.watch-main-text {
+  font-size: 1rem;
+}
+
+/* ── Embed Hata Ekranı ── */
+.embed-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  background: var(--bg-secondary);
+  color: var(--text-muted);
+  text-align: center;
+  padding: 2rem;
+}
+
+.embed-error p {
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* ── İzleme Siteleri Butonları ── */
 .watch-btns {
   display: flex;
   gap: 0.6rem;
