@@ -11,6 +11,7 @@ const ONLINE_SITES = [
 { name: 'Dünya TV', url: 'https://famelack.com/' },
 { name: 'Canlı Kamera Hayvanlar', url: 'https://explore.org/' },
   { name: 'Canlı Dünya Hava Olayları', url: 'https://www.windy.com/?39.126,35.192,7' },
+{ name: 'Online Oyun', url: 'https://www.crazygames.com/tr/' },
   ]
 
 export default function Navbar({ onSearch, onTabChange, activeTab }) {
