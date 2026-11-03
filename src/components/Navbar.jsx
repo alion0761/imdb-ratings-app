@@ -8,6 +8,7 @@ const ONLINE_SITES = [
   { name: 'Cine HD', url: 'https://cinehd.vc/home' },
   { name: 'Netflix', url: 'https://net77.cc/home' },
   { name: 'Online Satranç', url: 'https://www.chess.com/tr/play/computer' },
+{ name: 'Dünya TV', url: 'https://famelack.com/' },
   ]
 
 export default function Navbar({ onSearch, onTabChange, activeTab }) {
