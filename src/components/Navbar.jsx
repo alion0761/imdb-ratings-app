@@ -15,6 +15,7 @@ const ONLINE_SITES = [
 { name: 'Windows XP', url: 'https://quenq.com/apps/reborn-xp/' },
 { name: 'Online: Haritadan yer bul', url: 'https://www.worldguessr.com/' },
 { name: 'Online Browser', url: 'https://browser.lol/' },
+{ name: 'Hız Testi', url: 'https://www.speedtest.net/' },
   ]
 
 export default function Navbar({ onSearch, onTabChange, activeTab }) {
