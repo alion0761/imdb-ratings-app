@@ -13,6 +13,7 @@ const ONLINE_SITES = [
   { name: 'Canlı Dünya Hava Olayları', url: 'https://www.windy.com/?39.126,35.192,7' },
 { name: 'Online Oyun', url: 'https://www.crazygames.com/tr/' },
 { name: 'Windows XP', url: 'https://quenq.com/apps/reborn-xp/' },
+{ name: 'Online: Haritadan yer bul', url: 'https://www.worldguessr.com/' },
   ]
 
 export default function Navbar({ onSearch, onTabChange, activeTab }) {
