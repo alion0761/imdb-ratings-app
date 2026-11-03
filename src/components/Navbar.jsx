@@ -9,6 +9,8 @@ const ONLINE_SITES = [
   { name: 'Netflix', url: 'https://net77.cc/home' },
   { name: 'Online Satranç', url: 'https://www.chess.com/tr/play/computer' },
 { name: 'Dünya TV', url: 'https://famelack.com/' },
+{ name: 'Canlı Kamera Hayvanlar', url: 'https://explore.org/' },
+  { name: 'Canlı Dünya Hava Olayları', url: 'https://www.windy.com/?39.126,35.192,7' },
   ]
 
 export default function Navbar({ onSearch, onTabChange, activeTab }) {
