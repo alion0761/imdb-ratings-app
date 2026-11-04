@@ -16,6 +16,7 @@ const ONLINE_SITES = [
 { name: 'Online: Haritadan yer bul', url: 'https://www.worldguessr.com/' },
 { name: 'Online Browser', url: 'https://browser.lol/en/viewer' },
 { name: 'Hız Testi', url: 'https://www.speedtest.net/' },
+{ name: 'Dünya Radyoları', url: 'https://radio.garden/' },
   ]
 
 export default function Navbar({ onSearch, onTabChange, activeTab }) {
