@@ -65,7 +65,7 @@ export default function Navbar({ onSearch, onTabChange, activeTab }) {
               🌐 Online Film <span className="dropdown-arrow">{sitesOpen ? '▲' : '▼'}</span>
             </button>
             <div className="nav-dropdown-menu">
-              {ONLINE_SITES.map(site => (
+              {ONLINE_SITES.map((site, i) => (
                 <a
                   key={site.url}
                   className="nav-dropdown-item"
@@ -74,6 +74,7 @@ export default function Navbar({ onSearch, onTabChange, activeTab }) {
                   rel="noreferrer"
                   onClick={() => { setSitesOpen(false); setMenuOpen(false) }}
                 >
+                  <span className="dropdown-num">{i + 1}.</span>
                   {site.name} <span className="dropdown-ext">↗</span>
                 </a>
               ))}
