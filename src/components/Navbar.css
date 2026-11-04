@@ -131,7 +131,8 @@
 .nav-dropdown-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 0.4rem;
   padding: 0.65rem 1rem;
   color: var(--text-secondary);
   text-decoration: none;
@@ -139,6 +140,10 @@
   font-weight: 500;
   transition: all var(--transition);
   border-bottom: 1px solid var(--border);
+}
+
+.nav-dropdown-item .dropdown-ext {
+  margin-left: auto;
 }
 
 .nav-dropdown-item:last-child {
