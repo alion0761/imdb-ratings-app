@@ -14,7 +14,7 @@ const ONLINE_SITES = [
 { name: 'Online Oyun', url: 'https://www.crazygames.com/tr/' },
 { name: 'Windows XP', url: 'https://quenq.com/apps/reborn-xp/' },
 { name: 'Online: Haritadan yer bul', url: 'https://www.worldguessr.com/' },
-{ name: 'Online Browser', url: 'https://browser.lol/' },
+{ name: 'Online Browser', url: 'https://browser.lol/en/viewer' },
 { name: 'Hız Testi', url: 'https://www.speedtest.net/' },
   ]
 
