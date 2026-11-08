@@ -189,6 +189,16 @@
 
 .dropdown-site-name {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.dropdown-desc {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  opacity: 0.75;
 }
 
 .dropdown-ext {

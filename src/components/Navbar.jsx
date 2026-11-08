@@ -118,6 +118,22 @@ const ONLINE_CATEGORIES = [
     ]
   },
   {
+    category: '⚽ Canlı Maçlar',
+    sites: [
+      { name: 'TotalSportek', url: 'https://totalsportek.com', desc: 'Çok maç, HD' },
+      { name: 'SportSurge', url: 'https://sportsurge.net', desc: 'Çok maç, HD' },
+      { name: 'StreamEast', url: 'https://streameast.to', desc: 'Canlı yayın' },
+      { name: 'BuffStreams', url: 'https://buffstreams.tv', desc: 'Canlı yayın' },
+      { name: 'CrackStreams', url: 'https://crackstreams.com', desc: 'Canlı yayın' },
+      { name: 'HesGoal', url: 'https://hesgoal.com', desc: 'Futbol, HD' },
+      { name: 'FootyBite', url: 'https://footybite.to', desc: 'Futbol, çoklu yayın' },
+      { name: '12thPlayer', url: 'https://12thplayer.com', desc: 'Canlı maç' },
+      { name: 'SportSurge (Ayna)', url: 'https://sportsurge.io', desc: 'Ayna site' },
+      { name: 'RojaDirecta', url: 'https://rojadirecta.me', desc: 'İspanyol, çok maç' },
+      { name: 'LiveTV', url: 'https://livetv.sx', desc: 'Canlı yayın' },
+    ]
+  },
+  {
     category: '🛠️ Araçlar & Diğer',
     sites: [
       { name: 'Windows XP', url: 'https://quenq.com/apps/reborn-xp/' },
@@ -182,7 +198,7 @@ export default function Navbar({ onSearch, onTabChange, activeTab }) {
                 }
               }}
             >
-              🌐 Online Film {unlocked ? <span className="dropdown-lock unlocked">🔓</span> : <span className="dropdown-lock">🔒</span>} <span className="dropdown-arrow">{sitesOpen && unlocked ? '▲' : '▼'}</span>
+              🌐 Online {unlocked ? <span className="dropdown-lock unlocked">🔓</span> : <span className="dropdown-lock">🔒</span>} <span className="dropdown-arrow">{sitesOpen && unlocked ? '▲' : '▼'}</span>
             </button>
             {unlocked && (
               <div className="nav-dropdown-menu">
@@ -199,7 +215,7 @@ export default function Navbar({ onSearch, onTabChange, activeTab }) {
                         onClick={() => { setSitesOpen(false); setMenuOpen(false) }}
                       >
                         <span className="dropdown-num">{i + 1}.</span>
-                        <span className="dropdown-site-name">{site.name}</span>
+                        <span className="dropdown-site-name">{site.name}{site.desc && <span className="dropdown-desc">{site.desc}</span>}</span>
                         <span className="dropdown-ext">↗</span>
                       </a>
                     ))}
