@@ -407,6 +407,188 @@
   display: none;
 }
 
+/* ── PIN Modal ── */
+.pin-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pin-modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 20px;
+  padding: 2rem 1.75rem 1.75rem;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  animation: pinSlideIn 0.2s ease;
+}
+
+@keyframes pinSlideIn {
+  from { opacity: 0; transform: scale(0.9) translateY(-10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.pin-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.15s;
+}
+.pin-close:hover { background: var(--bg-card-hover); color: var(--text-primary); }
+
+.pin-lock-icon {
+  font-size: 2.2rem;
+  margin-bottom: 0.1rem;
+}
+
+.pin-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.pin-subtitle {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Nokta göstergesi */
+.pin-dots {
+  display: flex;
+  gap: 0.75rem;
+  margin: 0.5rem 0 0.25rem;
+}
+
+.pin-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--border-light);
+  background: transparent;
+  transition: all 0.15s ease;
+}
+
+.pin-dot.filled {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 8px rgba(245,197,24,0.5);
+}
+
+.pin-dot.error {
+  background: #e05c5c;
+  border-color: #e05c5c;
+  box-shadow: 0 0 8px rgba(224,92,92,0.5);
+}
+
+@keyframes pinShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+.pin-shake {
+  animation: pinShake 0.5s ease;
+}
+
+/* Numpad */
+.pin-numpad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: 0.25rem;
+}
+
+.pin-key {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-size: 1.3rem;
+  font-weight: 600;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.12s ease;
+  user-select: none;
+}
+
+.pin-key:hover:not(:disabled) {
+  background: var(--bg-card-hover);
+  border-color: var(--border-light);
+  transform: scale(1.05);
+}
+
+.pin-key:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.pin-key:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pin-key-del {
+  background: rgba(224,92,92,0.1);
+  border-color: rgba(224,92,92,0.25);
+  color: #e05c5c;
+  font-size: 1rem;
+}
+
+.pin-key-del:hover:not(:disabled) {
+  background: rgba(224,92,92,0.2);
+  border-color: rgba(224,92,92,0.5);
+}
+
+.pin-key-ok {
+  background: rgba(245,197,24,0.12);
+  border-color: rgba(245,197,24,0.3);
+  color: var(--accent);
+  font-size: 1.1rem;
+}
+
+.pin-key-ok:hover:not(:disabled) {
+  background: rgba(245,197,24,0.25);
+  border-color: rgba(245,197,24,0.6);
+}
+
+/* Kilit ikonu navbar'da */
+.dropdown-lock {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.dropdown-lock.unlocked {
+  opacity: 0.9;
+}
+
 @media (max-width: 640px) {
   .mobile-search-row {
     display: flex;
