@@ -204,7 +204,7 @@ export default function Navbar({ onSearch, onTabChange, activeTab }) {
             {unlocked && (
               <div className="nav-dropdown-menu">
                 {ONLINE_CATEGORIES.map((cat) => (
-                  <div key={cat.category} className="dropdown-category">
+                  <div key={cat.category} className={`dropdown-category ${cat.sites.length > 5 ? 'dropdown-category-wide' : ''}`}>
                     <div className="dropdown-category-title">{cat.category}</div>
                     {cat.sites.map((site, i) => (
                       <a

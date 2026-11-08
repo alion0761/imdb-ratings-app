@@ -113,20 +113,38 @@
   position: absolute;
   top: calc(100% + 6px);
   left: 0;
-  width: 540px;
+  width: 580px;
+  max-height: 70vh;
   background: var(--bg-card);
   border: 1px solid var(--border-light);
   border-radius: var(--radius);
   box-shadow: 0 8px 32px rgba(0,0,0,0.6);
   z-index: 200;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   animation: fadeDown 0.15s ease;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-light) transparent;
+}
+
+.nav-dropdown-menu::-webkit-scrollbar {
+  width: 4px;
+}
+.nav-dropdown-menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+.nav-dropdown-menu::-webkit-scrollbar-thumb {
+  background: var(--border-light);
+  border-radius: 4px;
 }
 
 .nav-dropdown.open .nav-dropdown-menu {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0;
+  align-items: start;
 }
 
 /* Kategori bloğu */
@@ -142,6 +160,12 @@
 
 .dropdown-category:nth-last-child(-n+2) {
   border-bottom: none;
+}
+
+/* Tek kolonlu uzun kategoriler (Canlı Maçlar gibi) tam genişlik kaplasın */
+.dropdown-category-wide {
+  grid-column: 1 / -1;
+  border-right: none;
 }
 
 /* Kategori başlığı */
@@ -216,17 +240,34 @@
 
   .nav-dropdown-menu {
     position: static;
+    width: 100%;
+    max-height: 60vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
     box-shadow: none;
     border: none;
     border-top: 1px solid var(--border);
     border-radius: 0;
     background: rgba(255,255,255,0.03);
     animation: none;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-light) transparent;
+  }
+
+  .nav-dropdown.open .nav-dropdown-menu {
+    grid-template-columns: 1fr;
+  }
+
+  .dropdown-category-wide {
+    grid-column: 1;
   }
 
   .nav-dropdown-item {
     padding: 0.75rem 1.25rem;
     font-size: 0.9rem;
+    min-height: 48px;
   }
 }
 
