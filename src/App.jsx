@@ -28,14 +28,22 @@ export default function App() {
 
   return (
     <div className="app">
-      <Navbar
-        activeTab={activeTab}
-        onTabChange={handleTabChange}
-        onSearch={handleSearch}
-      />
+      {/* Navbar sadece home dışındaki sayfalarda üstte görünür */}
+      {activeTab !== 'home' && (
+        <Navbar
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+          onSearch={handleSearch}
+        />
+      )}
 
       <main className="app-main">
-        {activeTab === 'home' && <HomePage onCardClick={handleCardClick} />}
+        {activeTab === 'home' && (
+          <HomePage
+            onCardClick={handleCardClick}
+            navbarProps={{ activeTab, onTabChange: handleTabChange, onSearch: handleSearch }}
+          />
+        )}
         {activeTab === 'movies' && <BrowsePage key="movies" mediaType="movie" onCardClick={handleCardClick} />}
         {activeTab === 'tv' && <BrowsePage key="tv" mediaType="tv" onCardClick={handleCardClick} />}
         {activeTab === 'toprated' && <TopRatedPage onCardClick={handleCardClick} />}

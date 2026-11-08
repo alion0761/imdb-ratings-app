@@ -6,6 +6,7 @@ import {
   fetchRandomTopRatedMovie
 } from '../api'
 import MovieGrid from '../components/MovieGrid'
+import Navbar from '../components/Navbar'
 import { IMG_W500, PLACEHOLDER_IMG } from '../api'
 import './HomePage.css'
 
@@ -18,7 +19,7 @@ function Section({ title, items, type, loading, onCardClick }) {
   )
 }
 
-export default function HomePage({ onCardClick }) {
+export default function HomePage({ onCardClick, navbarProps }) {
   const [trendMovies, setTrendMovies] = useState([])
   const [trendTV, setTrendTV] = useState([])
   const [topMovies, setTopMovies] = useState([])
@@ -119,6 +120,15 @@ export default function HomePage({ onCardClick }) {
           )}
         </div>
       </div>
+
+      {/* Navbar — film önerilerinin hemen üstünde */}
+      {navbarProps && (
+        <Navbar
+          activeTab={navbarProps.activeTab}
+          onTabChange={navbarProps.onTabChange}
+          onSearch={navbarProps.onSearch}
+        />
+      )}
 
       <div className="home-content">
         <Section title="🔥 Bu Hafta Trend Filmler" items={trendMovies} type="movie" loading={loading} onCardClick={onCardClick} />
