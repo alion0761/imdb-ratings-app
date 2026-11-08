@@ -181,6 +181,7 @@ export default function Navbar({ onSearch, onTabChange, activeTab }) {
         </div>
 
         <nav className={`navbar-links ${menuOpen ? 'open' : ''}`}>
+          <button className="nav-link nav-refresh-btn" onClick={() => window.location.reload()} title="Sayfayı Yenile">🔄 Yenile</button>
           <button className={`nav-link ${activeTab === 'home' ? 'active' : ''}`} onClick={() => handleTab('home')}>🏠 Ana Sayfa</button>
           <button className={`nav-link ${activeTab === 'movies' ? 'active' : ''}`} onClick={() => handleTab('movies')}>🎥 Filmler</button>
           <button className={`nav-link ${activeTab === 'tv' ? 'active' : ''}`} onClick={() => handleTab('tv')}>📺 Diziler</button>
