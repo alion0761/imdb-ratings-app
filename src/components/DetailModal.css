@@ -718,6 +718,158 @@
   margin-left: 0.1rem;
 }
 
+.find-film-locked {
+  background: rgba(255,255,255,0.05);
+  color: var(--text-muted);
+  border: 1.5px dashed var(--border-light);
+  cursor: pointer;
+  gap: 0.5rem;
+}
+
+.find-film-locked:hover {
+  background: rgba(245,197,24,0.08);
+  color: var(--accent);
+  border-color: rgba(245,197,24,0.4);
+  transform: translateY(-2px);
+}
+
+/* ── MiniPinModal (DetailModal içi) ── */
+.dm-pin-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dm-pin-modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 20px;
+  padding: 1.75rem 1.5rem 1.5rem;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+  animation: pinSlideIn 0.2s ease;
+}
+
+.dm-pin-close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.15s;
+}
+.dm-pin-close:hover { background: var(--bg-card-hover); color: var(--text-primary); }
+
+.dm-pin-lock { font-size: 2rem; }
+
+.dm-pin-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.dm-pin-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.dm-pin-dots {
+  display: flex;
+  gap: 0.65rem;
+  margin: 0.4rem 0 0.2rem;
+}
+
+.dm-pin-dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 2px solid var(--border-light);
+  background: transparent;
+  transition: all 0.15s ease;
+}
+.dm-pin-dot.filled {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 8px rgba(245,197,24,0.5);
+}
+.dm-pin-dot.error {
+  background: #e05c5c;
+  border-color: #e05c5c;
+}
+
+.dm-pin-shake { animation: pinShake 0.5s ease; }
+
+.dm-pin-numpad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.4rem;
+  width: 100%;
+  margin-top: 0.2rem;
+}
+
+.dm-pin-key {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  font-weight: 600;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.12s ease;
+  user-select: none;
+}
+.dm-pin-key:hover:not(:disabled) {
+  background: var(--bg-card-hover);
+  transform: scale(1.05);
+}
+.dm-pin-key:active:not(:disabled) { transform: scale(0.95); }
+.dm-pin-key:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.dm-pk-del {
+  background: rgba(224,92,92,0.1);
+  border-color: rgba(224,92,92,0.25);
+  color: #e05c5c;
+  font-size: 0.95rem;
+}
+.dm-pk-del:hover:not(:disabled) {
+  background: rgba(224,92,92,0.2);
+  border-color: rgba(224,92,92,0.5);
+}
+
+.dm-pk-ok {
+  background: rgba(245,197,24,0.12);
+  border-color: rgba(245,197,24,0.3);
+  color: var(--accent);
+}
+.dm-pk-ok:hover:not(:disabled) {
+  background: rgba(245,197,24,0.25);
+  border-color: rgba(245,197,24,0.6);
+}
+
 @media (max-width: 640px) {
   .detail-overlay {
     padding: 0;

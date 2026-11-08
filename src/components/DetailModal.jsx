@@ -2,6 +2,81 @@ import { useEffect, useState } from 'react'
 import { fetchMovieDetails, fetchTVDetails, IMG_W500, IMG_ORIGINAL, PLACEHOLDER_IMG } from '../api'
 import './DetailModal.css'
 
+// SHA-256 PIN doğrulama — Navbar ile aynı
+const DM_HASH = '06af8525da0bd0971e3ce0c03516fe0cb00d44432dafa1989e44d42b27458e2e'
+const DM_SALT = 'TLG_x9kM2qR5nP8vZ_tellioglu_2026_secure'
+
+async function verifyDmPin(pin) {
+  const data = new TextEncoder().encode(DM_SALT + pin)
+  const buf  = await crypto.subtle.digest('SHA-256', data)
+  const hex  = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('')
+  return hex === DM_HASH
+}
+
+function MiniPinModal({ onSuccess, onClose }) {
+  const [digits, setDigits] = useState([])
+  const [shake, setShake]   = useState(false)
+  const [busy, setBusy]     = useState(false)
+  const KEYS = ['1','2','3','4','5','6','7','8','9','←','0','✓']
+
+  async function tap(k) {
+    if (busy) return
+    if (k === '←') { setDigits(d => d.slice(0,-1)); return }
+    if (k === '✓') {
+      if (digits.length < 4) return
+      setBusy(true)
+      const ok = await verifyDmPin(digits.join(''))
+      ok ? onSuccess() : fail()
+      return
+    }
+    if (digits.length >= 4) return
+    const next = [...digits, k]
+    setDigits(next)
+    if (next.length === 4) {
+      setBusy(true)
+      const ok = await verifyDmPin(next.join(''))
+      ok ? onSuccess() : fail()
+    }
+  }
+
+  function fail() {
+    setShake(true)
+    setTimeout(() => { setShake(false); setDigits([]); setBusy(false) }, 600)
+  }
+
+  useEffect(() => {
+    const h = e => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', h)
+    return () => document.removeEventListener('keydown', h)
+  }, [onClose])
+
+  return (
+    <div className="dm-pin-overlay" onClick={e => { if (e.target === e.currentTarget) onClose() }}>
+      <div className="dm-pin-modal">
+        <button className="dm-pin-close" onClick={onClose}>✕</button>
+        <div className="dm-pin-lock">🔐</div>
+        <p className="dm-pin-title">İzleme Erişimi</p>
+        <p className="dm-pin-sub">PIN girin</p>
+        <div className={`dm-pin-dots ${shake ? 'dm-pin-shake' : ''}`}>
+          {[0,1,2,3].map(i => (
+            <div key={i} className={`dm-pin-dot ${digits.length > i ? 'filled' : ''} ${shake ? 'error' : ''}`} />
+          ))}
+        </div>
+        <div className="dm-pin-numpad">
+          {KEYS.map(k => (
+            <button
+              key={k}
+              className={`dm-pin-key ${k==='←'?'dm-pk-del':''} ${k==='✓'?'dm-pk-ok':''}`}
+              onClick={() => tap(k)}
+              disabled={busy}
+            >{k}</button>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function getRatingColor(score) {
   if (score >= 7.5) return '#4caf7d'
   if (score >= 6.0) return '#F5C518'
@@ -74,6 +149,8 @@ export default function DetailModal({ item, type, onClose }) {
   const [watchMode, setWatchMode] = useState(null)   // null | 'embed'
   const [embedSrc, setEmbedSrc] = useState('')
   const [embedError, setEmbedError] = useState(false)
+  const [findUnlocked, setFindUnlocked] = useState(false)
+  const [showFindPin, setShowFindPin] = useState(false)
 
   useEffect(() => {
     if (!item) return
@@ -251,8 +328,20 @@ export default function DetailModal({ item, type, onClose }) {
                 </a>
               )}
 
-              {/* Filmi Bul butonları */}
-              {!loading && (
+              {/* Filmi Bul butonları — PIN korumalı */}
+              {!loading && !findUnlocked && (
+                <div className="find-film-row">
+                  <button
+                    className="find-film-btn find-film-locked"
+                    onClick={() => setShowFindPin(true)}
+                  >
+                    <span className="find-film-icon">🔒</span>
+                    <span>Dublaj / Altyazılı İzle</span>
+                  </button>
+                </div>
+              )}
+
+              {!loading && findUnlocked && (
                 <div className="find-film-row">
                   <a
                     className="find-film-btn find-film-dublaj"
@@ -275,6 +364,14 @@ export default function DetailModal({ item, type, onClose }) {
                     <span className="find-film-ext">↗</span>
                   </a>
                 </div>
+              )}
+
+              {/* PIN Modal */}
+              {showFindPin && (
+                <MiniPinModal
+                  onSuccess={() => { setFindUnlocked(true); setShowFindPin(false) }}
+                  onClose={() => setShowFindPin(false)}
+                />
               )}
 
             </div>
