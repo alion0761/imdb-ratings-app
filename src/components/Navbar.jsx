@@ -105,6 +105,7 @@ const ONLINE_CATEGORIES = [
     sites: [
       { name: 'Online Satranç', url: 'https://www.chess.com/tr/play/computer' },
       { name: 'Online Oyun', url: 'https://www.crazygames.com/tr/' },
+      { name: 'Pes13', url: 'https://pes13.optijuegos.net/pes13' },
     ]
   },
   {
