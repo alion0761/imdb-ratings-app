@@ -658,6 +658,66 @@
   to { transform: rotate(360deg); }
 }
 
+/* ── Filmi Bul Butonları ── */
+.find-film-row {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.find-film-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 50px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  letter-spacing: 0.3px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.find-film-dublaj {
+  background: rgba(76, 175, 125, 0.12);
+  color: #4caf7d;
+  border: 1.5px solid rgba(76, 175, 125, 0.35);
+}
+
+.find-film-dublaj:hover {
+  background: rgba(76, 175, 125, 0.25);
+  border-color: rgba(76, 175, 125, 0.7);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(76, 175, 125, 0.25);
+}
+
+.find-film-altyazi {
+  background: rgba(100, 149, 237, 0.12);
+  color: #6495ed;
+  border: 1.5px solid rgba(100, 149, 237, 0.35);
+}
+
+.find-film-altyazi:hover {
+  background: rgba(100, 149, 237, 0.25);
+  border-color: rgba(100, 149, 237, 0.7);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(100, 149, 237, 0.25);
+}
+
+.find-film-icon {
+  font-size: 0.95rem;
+}
+
+.find-film-ext {
+  font-size: 0.7rem;
+  opacity: 0.6;
+  margin-left: 0.1rem;
+}
+
 @media (max-width: 640px) {
   .detail-overlay {
     padding: 0;

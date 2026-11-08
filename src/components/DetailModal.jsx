@@ -114,6 +114,13 @@ export default function DetailModal({ item, type, onClose }) {
   // YouTube arama URL'si — API key gerektirmez
   const ytSearchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(title + ' fragman trailer')}`
 
+  // Türkçe ad — TMDB details'ten gelir, yoksa item adını kullan
+  const trTitle = (type === 'movie' ? d?.title : d?.name) || title
+
+  // "Filmi Bul" Google arama URL'leri
+  const googleDublajUrl = `https://www.google.com/search?q=${encodeURIComponent(`"${trTitle}" türkçe dublaj izle`)}`
+  const googleAltyazıUrl = `https://www.google.com/search?q=${encodeURIComponent(`"${trTitle}" türkçe altyazılı izle`)}`
+
   // TMDB ID
   const tmdbId = item.id
 
@@ -244,6 +251,31 @@ export default function DetailModal({ item, type, onClose }) {
                 </a>
               )}
 
+              {/* Filmi Bul butonları */}
+              {!loading && (
+                <div className="find-film-row">
+                  <a
+                    className="find-film-btn find-film-dublaj"
+                    href={googleDublajUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <span className="find-film-icon">🎙️</span>
+                    <span>Dublaj İzle</span>
+                    <span className="find-film-ext">↗</span>
+                  </a>
+                  <a
+                    className="find-film-btn find-film-altyazi"
+                    href={googleAltyazıUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <span className="find-film-icon">📝</span>
+                    <span>Altyazılı İzle</span>
+                    <span className="find-film-ext">↗</span>
+                  </a>
+                </div>
+              )}
 
             </div>
           )}
