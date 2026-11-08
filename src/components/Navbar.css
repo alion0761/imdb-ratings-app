@@ -113,37 +113,60 @@
   position: absolute;
   top: calc(100% + 6px);
   left: 0;
-  min-width: 200px;
+  width: 540px;
   background: var(--bg-card);
   border: 1px solid var(--border-light);
   border-radius: var(--radius);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
   z-index: 200;
   overflow: hidden;
   animation: fadeDown 0.15s ease;
 }
 
 .nav-dropdown.open .nav-dropdown-menu {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+/* Kategori bloğu */
+.dropdown-category {
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.25rem;
+}
+
+.dropdown-category:nth-child(even) {
+  border-right: none;
+}
+
+.dropdown-category:nth-last-child(-n+2) {
+  border-bottom: none;
+}
+
+/* Kategori başlığı */
+.dropdown-category-title {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 0.6rem 1rem 0.4rem;
+  background: rgba(245,197,24,0.06);
+  border-bottom: 1px solid var(--border);
 }
 
 .nav-dropdown-item {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
   gap: 0.4rem;
-  padding: 0.65rem 1rem;
+  padding: 0.5rem 1rem;
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: 0.875rem;
+  font-size: 0.82rem;
   font-weight: 500;
   transition: all var(--transition);
-  border-bottom: 1px solid var(--border);
-}
-
-.nav-dropdown-item .dropdown-ext {
-  margin-left: auto;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
 }
 
 .nav-dropdown-item:last-child {
@@ -156,16 +179,23 @@
 }
 
 .dropdown-num {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
   color: var(--accent);
-  min-width: 20px;
-  opacity: 0.8;
+  min-width: 18px;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+.dropdown-site-name {
+  flex: 1;
 }
 
 .dropdown-ext {
-  font-size: 0.75rem;
-  opacity: 0.6;
+  font-size: 0.7rem;
+  opacity: 0.5;
+  margin-left: auto;
+  flex-shrink: 0;
 }
 
 /* Mobilde dropdown menü full width olsun */
@@ -294,6 +324,25 @@
 
   .search-input:focus {
     width: 180px;
+  }
+}
+
+/* ── Dropdown mobil uyum ── */
+@media (max-width: 768px) {
+  .nav-dropdown-menu {
+    width: 320px;
+  }
+  .nav-dropdown.open .nav-dropdown-menu {
+    grid-template-columns: 1fr;
+  }
+  .dropdown-category:nth-child(even) {
+    border-right: none;
+  }
+  .dropdown-category:nth-last-child(-n+2) {
+    border-bottom: 1px solid var(--border);
+  }
+  .dropdown-category:last-child {
+    border-bottom: none;
   }
 }
 

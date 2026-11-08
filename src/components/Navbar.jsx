@@ -1,23 +1,43 @@
 import { useState } from 'react'
 import './Navbar.css'
 
-const ONLINE_SITES = [
-  { name: 'HD Film Cehennemi', url: 'https://www.hdfilmcehennemi.land/' },
-  { name: 'DiziPal', url: 'https://www.google.com/search?q=dizipal&oq=dizi&gs_lcrp=EgZjaHJvbWUqCAgAEEUYJxg7MggIABBFGCcYOzIGCAEQRRg5MgYIAhBFGDwyBggDEEUYQTIGCAQQRRg8MgYIBRBFGEEyBggGEEUYPTIGCAcQRRhB0gEIMTg1M2owajeoAgiwAgHxBRDy-YIPfMFP&sourceid=chrome&source=chrome.ob&ie=UTF-8' },
-  { name: 'FullHD Filmizlesene', url: 'https://www.fullhdfilmizlesene.now/' },
-  { name: 'Cine HD', url: 'https://cinehd.vc/home' },
-  { name: 'Netflix', url: 'https://net77.cc/home' },
-  { name: 'Online Satranç', url: 'https://www.chess.com/tr/play/computer' },
-{ name: 'Dünya TV', url: 'https://famelack.com/' },
-{ name: 'Canlı Kamera Hayvanlar', url: 'https://explore.org/' },
-  { name: 'Canlı Dünya Hava Olayları', url: 'https://www.windy.com/?39.126,35.192,7' },
-{ name: 'Online Oyun', url: 'https://www.crazygames.com/tr/' },
-{ name: 'Windows XP', url: 'https://quenq.com/apps/reborn-xp/' },
-{ name: 'Online: Haritadan yer bul', url: 'https://www.worldguessr.com/' },
-{ name: 'Online Browser', url: 'https://browser.lol/en/viewer' },
-{ name: 'Hız Testi', url: 'https://www.speedtest.net/' },
-{ name: 'Dünya Radyoları', url: 'https://radio.garden/' },
-  ]
+const ONLINE_CATEGORIES = [
+  {
+    category: '🎬 Film & Dizi',
+    sites: [
+      { name: 'HD Film Cehennemi', url: 'https://www.hdfilmcehennemi.land/' },
+      { name: 'DiziPal', url: 'https://www.google.com/search?q=dizipal&oq=dizi&gs_lcrp=EgZjaHJvbWUqCAgAEEUYJxg7MggIABBFGCcYOzIGCAEQRRg5MgYIAhBFGDwyBggDEEUYQTIGCAQQRRg8MgYIBRBFGEEyBggGEEUYPTIGCAcQRRhB0gEIMTg1M2owajeoAgiwAgHxBRDy-YIPfMFP&sourceid=chrome&source=chrome.ob&ie=UTF-8' },
+      { name: 'FullHD Filmizlesene', url: 'https://www.fullhdfilmizlesene.now/' },
+      { name: 'Cine HD', url: 'https://cinehd.vc/home' },
+      { name: 'Netflix', url: 'https://net77.cc/home' },
+    ]
+  },
+  {
+    category: '🎮 Oyun & Eğlence',
+    sites: [
+      { name: 'Online Satranç', url: 'https://www.chess.com/tr/play/computer' },
+      { name: 'Online Oyun', url: 'https://www.crazygames.com/tr/' },
+    ]
+  },
+  {
+    category: '📡 Canlı & Keşif',
+    sites: [
+      { name: 'Dünya TV', url: 'https://famelack.com/' },
+      { name: 'Canlı Kamera Hayvanlar', url: 'https://explore.org/' },
+      { name: 'Canlı Dünya Hava Olayları', url: 'https://www.windy.com/?39.126,35.192,7' },
+      { name: 'Dünya Radyoları', url: 'https://radio.garden/' },
+    ]
+  },
+  {
+    category: '🛠️ Araçlar & Diğer',
+    sites: [
+      { name: 'Windows XP', url: 'https://quenq.com/apps/reborn-xp/' },
+      { name: 'Haritadan Yer Bul', url: 'https://www.worldguessr.com/' },
+      { name: 'Online Browser', url: 'https://browser.lol/en/viewer' },
+      { name: 'Hız Testi', url: 'https://www.speedtest.net/' },
+    ]
+  },
+]
 
 export default function Navbar({ onSearch, onTabChange, activeTab }) {
   const [query, setQuery] = useState('')
@@ -65,18 +85,24 @@ export default function Navbar({ onSearch, onTabChange, activeTab }) {
               🌐 Online Film <span className="dropdown-arrow">{sitesOpen ? '▲' : '▼'}</span>
             </button>
             <div className="nav-dropdown-menu">
-              {ONLINE_SITES.map((site, i) => (
-                <a
-                  key={site.url}
-                  className="nav-dropdown-item"
-                  href={site.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  onClick={() => { setSitesOpen(false); setMenuOpen(false) }}
-                >
-                  <span className="dropdown-num">{i + 1}.</span>
-                  {site.name} <span className="dropdown-ext">↗</span>
-                </a>
+              {ONLINE_CATEGORIES.map((cat) => (
+                <div key={cat.category} className="dropdown-category">
+                  <div className="dropdown-category-title">{cat.category}</div>
+                  {cat.sites.map((site, i) => (
+                    <a
+                      key={site.url}
+                      className="nav-dropdown-item"
+                      href={site.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={() => { setSitesOpen(false); setMenuOpen(false) }}
+                    >
+                      <span className="dropdown-num">{i + 1}.</span>
+                      <span className="dropdown-site-name">{site.name}</span>
+                      <span className="dropdown-ext">↗</span>
+                    </a>
+                  ))}
+                </div>
               ))}
             </div>
           </div>
