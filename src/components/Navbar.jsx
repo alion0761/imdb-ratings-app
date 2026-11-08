@@ -158,8 +158,8 @@ export default function Navbar({ onSearch, onTabChange, activeTab }) {
         <div className="navbar-brand" onClick={() => handleTab('home')}>
           <span className="navbar-logo">🎬</span>
           <div className="navbar-title-wrap">
-            <span className="navbar-name">TELLIOGLU AİLESİ</span>
-            <span className="navbar-subtitle">Kişisel Film Asistanı</span>
+            <span className="navbar-name">Film Seçme Asistanı</span>
+            <span className="navbar-subtitle">Film & Dizi Keşfet</span>
           </div>
         </div>
 

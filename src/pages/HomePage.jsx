@@ -70,8 +70,8 @@ export default function HomePage({ onCardClick }) {
       <div className="hero">
         <div className="hero-inner">
           <div className="hero-title-wrap">
-            <h1 className="hero-title">🎬 TELLIOGLU AİLESİ</h1>
-            <p className="hero-title-sub">Kişisel Film Asistanı</p>
+            <h1 className="hero-title">🎬 Film Seçme Asistanı</h1>
+            <p className="hero-title-sub">Film & Dizi Keşfet</p>
           </div>
           <p className="hero-sub">En güncel film ve dizileri keşfedin, puanları karşılaştırın.</p>
 
